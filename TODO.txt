@@ -1,0 +1,16 @@
+You will be developing a means of accessing the nether from our server. Its something that has been a long time coming and is possible now. This will be a regular event and not an open world invitation. Now for the technical stuff that needs to be in the implementation of it.
+
+1) This will be implemented in another server, so means of getting to/from this world should be in their own methods in the main class or alternatively in some sort of "helper" class. That way we can simply go in and alter what needs altering for the cloud system we have. So for testing purposes you can do standard teleports into the world spawn and to the main world spawn.
+
+2) This nether world will be reset once every 1 day, please make the 1 a constant so we can alter if we feel its needed. It would be best to make a function for generating a world as well as removing an old world. Both from game and from the file system. Also the plugin should reset the world automatically if the 1 day benchmark has been met. This check can be done onEnable and you can store the data for it in a config setting or mysql database.
+
+How the event will work:
+Most of this is taken from smc's suggestion however it is altered a little.
+
+Entrance/Exiting: A user will be able to enter this nether world once every 12-24 hours, please use a constant again in the main or a help class, to define this time length. The user should also have the permission node "Deity.nether.general", for entrance permission, and if they have "Deity.nether.override", they can join any time they so desire. Once they are in this world they have 1 hour to do what they need to do, please use another constant for this time length. When their hour is up they will get removed from this world and brought back to the main world. If you die before you hour is up in the nether you lose the remaining time and get ported back to the main world. We would like you to use a MySQL database for the users time in the world. Enter a row for the user when they join the world, and store the name of the user and the time of entrance. Then when the user exits store how long they were in the nether in another column so you can verify time constraints later on . Please also link the entrance/exit to commands, you can use the /nether command with any sort of arguments you so desire.
+
+Spawn: The spawn location of the world should always be at x:0, z:0, however the height should not be located in any blocks. We probably will require pasting a schematic at the spawn location, however dont worry about that, just put a //TODO where that should be located, so we know where to put the code for it.
+
+Inventory: When entering the nether you are allowed to bring any sort of tools/swords/armour/food if any other items are present in their inventory the users will be notified of this and the access denied, until they remove those items from their inventory. As for restrictions on bringing items back, there is none.
+
+Mobs: Mobs need not be altered with one exception. Pigman should have a 10% chance of dropping gold, please also make this 10% a constant that we can change later.
