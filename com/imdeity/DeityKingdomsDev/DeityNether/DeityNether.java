@@ -8,7 +8,7 @@ public class DeityNether extends JavaPlugin {
 	
 	public void onEnable(){
 		this.getCommand("nether").setExecutor(new NetherCommand(this));
-		this.getServer().getPluginManager().registerEvents(new PigmanListener(this), this);
+		getServer().getPluginManager().registerEvents(new PigmanListener(this), this);
 	}
 	
 	public void onDisable(){

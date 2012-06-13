@@ -1,0 +1,7 @@
+name: DeityNether
+version: 0.1
+main: com.imdeity.DeityKingdomsDev.DeityNether.DeityNether
+commands:
+  nether:
+    description: Base nether command
+    usage: /nether [args]
