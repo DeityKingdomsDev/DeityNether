@@ -3,6 +3,7 @@ package com.imdeity.DeityKingdomsDev.DeityNether.SQL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import org.bukkit.entity.Player;
 
@@ -15,7 +16,9 @@ public class NetherSQL {
 	static String sql;
 	static String name;
 	static int currentTime;
-	
+	static ResultSet result;
+	static int last;
+
 	public NetherSQL() {
 
 		try {
@@ -31,13 +34,13 @@ public class NetherSQL {
 		}
 		checkTables();
 	}
-	
+
 	public static void checkTables(){
 		//id, player name, enter-time (13), leave time (13), time in nether (millis), time in nether (minutes)
 		sendSQLCommand("CREATE DATABASE IF NOT EXISTS cliff");
 		sendSQLCommand("CREATE TABLE IF NOT EXISTS nether (`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, `player_name` VARCHAR(16) NOT NULL, `enter_time` INT(20) NOT NULL, `leave_time` INT(20) NOT NULL, `duration` INT(20) NOT NULL, `duration_mins` INT(10) NOT NULL)");                       
 	}
-	
+
 	public static boolean sendSQLCommand(String sql) {
 		try {
 			if(conn.isValid(5)){
@@ -46,7 +49,7 @@ public class NetherSQL {
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
-		
+
 		try {
 			state = conn.prepareStatement(sql);
 			state.executeUpdate();
@@ -55,13 +58,39 @@ public class NetherSQL {
 			exception.printStackTrace();
 			return false;
 		}
+
+	}
+
+	private static int getInt(String sql){
+		try {
+			if(conn.isValid(5)){
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			state = conn.prepareStatement(sql);
+			result = state.executeQuery();
+			return result.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
 		
 	}
-	
-	public static long getLong(){
-		//state = 
-		return 0;
-		
+
+	public static int getLastJoin(Player p){
+		name = p.getName();
+		//select max(id) from scores
+		last = getInt("select max(enter_time) from nether WHERE `player_name`=`" + name + "`");
+		if(last == -1){
+			return -1;
+		} else {
+			return last;
+		}
+
 	}
 	//"INSERT INTO `space_invaders`.`scores` (`id`, `name`, `score`) VALUES ('" + id + "', '" + Game.playerName +  "', '" + Game.score + "')");
 	public static void addPlayer(Player p) {
@@ -71,7 +100,7 @@ public class NetherSQL {
 		PlayerChecker.playersInNether.add(p);
 		PlayerChecker.map.put(p, currentTime);
 	}
-	
+
 	public static void removePlayer(Player p) {
 		sendSQLCommand("UPDATE `nether` SET `leave_time`=`" + (int)System.currentTimeMillis() + "' WHERE ``player_name`=`" + p.getName() + "` AND WHERE `enter_time`=`" + PlayerChecker.map.get(p) +"` )");
 		sendSQLCommand("UPDATE `nether` SET `duration`=`" + ((int)System.currentTimeMillis() - PlayerChecker.map.get(p)) + "' WHERE ``player_name`=`" + p.getName() + "` AND WHERE `enter_time`=`" + PlayerChecker.map.get(p) +"` )");
