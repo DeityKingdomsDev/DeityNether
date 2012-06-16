@@ -20,7 +20,8 @@ public class NetherCommand implements CommandExecutor {
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] arg3) {
+	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+		if(args.length == 1 && args[0].equalsIgnoreCase("join")){
 		player = (Player) sender;
 		if(player.hasPermission("Deity.nether.override")){
 			movePlayer(player);
@@ -35,6 +36,7 @@ public class NetherCommand implements CommandExecutor {
 		}
 		
 		return false;
+	}
 	}
 
 	private void movePlayer(Player p) {
