@@ -28,30 +28,29 @@ public class NetherSQL {
 		}
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		checkTables();
+
 	}
 
 	public static void checkTables(){
 		//id, player name, enter-time (13), leave time (13), time in nether (millis), time in nether (minutes)
-		sendSQLCommand("CREATE DATABASE IF NOT EXISTS cliff");
-		sendSQLCommand("CREATE TABLE IF NOT EXISTS nether (`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, `player_name` VARCHAR(16) NOT NULL, `enter_time` INT(20) NOT NULL, `leave_time` INT(20) NOT NULL, `duration` INT(20) NOT NULL, `duration_mins` INT(10) NOT NULL)");                       
+		sendSQLCommand("CREATE TABLE IF NOT EXISTS nether (`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, `player_name` VARCHAR(16) NOT NULL, `enter_time` INT(20) NOT NULL, `leave_time` INT(20) NOT NULL, `duration` INT(20) NOT NULL, `duration_mins` INT(10) NOT NULL, PRIMARY KEY(`id`))");                       
 	}
 
 	public static boolean sendSQLCommand(String sql) {
 		try {
-			if(conn.isValid(5)){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/");
+			if(!conn.isClosed()){
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
 			}
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
 
 		try {
-			state = conn.prepareStatement(sql);
+			PreparedStatement state = conn.prepareStatement(sql);
 			state.executeUpdate();
 			return true;
 		} catch (Exception exception) {
@@ -63,8 +62,8 @@ public class NetherSQL {
 
 	private static int getInt(String sql){
 		try {
-			if(conn.isValid(5)){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/");
+			if(!conn.isClosed()){
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,7 +82,6 @@ public class NetherSQL {
 
 	public static int getLastJoin(Player p){
 		name = p.getName();
-		//select max(id) from scores
 		last = getInt("select max(enter_time) from nether WHERE `player_name`=`" + name + "`");
 		if(last == -1){
 			return -1;
@@ -92,7 +90,6 @@ public class NetherSQL {
 		}
 
 	}
-	//"INSERT INTO `space_invaders`.`scores` (`id`, `name`, `score`) VALUES ('" + id + "', '" + Game.playerName +  "', '" + Game.score + "')");
 	public static void addPlayer(Player p) {
 		name = p.getName();
 		currentTime = (int) System.currentTimeMillis();

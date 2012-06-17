@@ -3,13 +3,24 @@ package com.imdeity.DeityKingdomsDev.DeityNether.helpers;
 import java.io.File;
 
 import org.bukkit.Location;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 
+import com.imdeity.DeityKingdomsDev.DeityNether.DeityNether;
+
 public class WorldHelper {
+	private static DeityNether plugin;
+	
+	public WorldHelper(DeityNether plugin){
+		this.plugin = plugin;
+	}
+	
 	static Location l;
 	static File file;
 	static File newFile;
 	static boolean success;
+	
+	static WorldCreator worldCreator;
 
 	public static void removePlayer(Player p) {
 		//TODO Add code to move player to the main server
@@ -28,7 +39,11 @@ public class WorldHelper {
 	public static void regenerateNether() {
 		file = new File("world_nether");
 		newFile = new File("plugins" + File.pathSeparator + "DeityNether" + File.pathSeparator + "world_nether " + System.currentTimeMillis());
-		//test re-naming directories
+		newFile.mkdirs();
+		
+		success = file.renameTo(newFile);
+		
+		plugin.getServer().createWorld(worldCreator);
 	}
 
 }

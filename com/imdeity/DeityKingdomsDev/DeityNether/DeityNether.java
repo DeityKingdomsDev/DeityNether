@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.imdeity.DeityKingdomsDev.DeityNether.SQL.NetherSQL;
 import com.imdeity.DeityKingdomsDev.DeityNether.helpers.WorldHelper;
 import com.imdeity.DeityKingdomsDev.DeityNether.listeners.PigmanListener;
 
@@ -15,6 +16,7 @@ public class DeityNether extends JavaPlugin {
 	public static int PLAYER_JOIN_NETHER_WAIT_MILLIS;
 	public static int WORLD_RESET_HOURS = 24;
 	public static int WORLD_RESET_MILLIS;
+	NetherSQL nsql;
 	int lastReset;
 	
 	FileConfiguration config;
@@ -49,6 +51,10 @@ public class DeityNether extends JavaPlugin {
 		if((int) System.currentTimeMillis() - lastReset > WORLD_RESET_MILLIS){
 			WorldHelper.regenerateNether();
 		}
+		
+		NetherSQL.checkTables();
+		
+		nsql = new NetherSQL();
 		
 	}
 	
