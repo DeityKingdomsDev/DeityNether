@@ -14,26 +14,27 @@ public class NetherCommand implements CommandExecutor {
 	Player player;
 	int lastJoin;
 	int currentTime;
-	
+
 	public NetherCommand(DeityNether plugin){
 		this.plugin = plugin;
 	}
-	
+
 	@Override
-	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] arg3) {
+	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		player = (Player) sender;
-		if(player.hasPermission("Deity.nether.override")){
-			movePlayer(player);
-		}else if(player.hasPermission("Deity.nether.general")){
-			if(playerHasWaited(player)){
+		if(args.length == 1 && args[0].equalsIgnoreCase("join")){
+			if(player.hasPermission("Deity.nether.override")){
 				movePlayer(player);
+			}else if(player.hasPermission("Deity.nether.general")){
+				if(playerHasWaited(player)){
+					movePlayer(player);
+				} else {
+					return false;
+				}
 			} else {
-				return false;
+				player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
 			}
-		} else {
-			player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
 		}
-		
 		return false;
 	}
 
@@ -41,7 +42,7 @@ public class NetherCommand implements CommandExecutor {
 		NetherSQL.addPlayer(p);
 		WorldHelper.removePlayer(p);
 	}
-	
+
 	public boolean playerHasWaited(Player p) {
 		currentTime = (int) System.currentTimeMillis();
 		lastJoin = NetherSQL.getLastJoin(p);
@@ -50,7 +51,7 @@ public class NetherCommand implements CommandExecutor {
 		} else {
 			return false;
 		}
-		
+
 	}
 
 }

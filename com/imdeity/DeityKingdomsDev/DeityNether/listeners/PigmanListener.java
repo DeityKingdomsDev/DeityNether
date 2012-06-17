@@ -21,7 +21,7 @@ public class PigmanListener implements Listener {
 	int chance = DeityNether.PIGMAN_DROP_GOLD_CHANCE;
 	int amountDropped;
 	ItemStack drops;
-	ItemStack newDrop;
+	ItemStack newDrop = new ItemStack(Material.GOLD_NUGGET, 1);
 	World world;
 	String s;
 
@@ -30,7 +30,6 @@ public class PigmanListener implements Listener {
 	}
 	@EventHandler
 	public void onPigmanDeath(EntityDeathEvent event){
-		newDrop = new ItemStack(Material.GOLD_NUGGET, 1);
 		entity = event.getEntity();
 		world = entity.getWorld();
 		s = world.getName();
