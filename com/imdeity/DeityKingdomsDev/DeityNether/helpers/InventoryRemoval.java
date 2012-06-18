@@ -1,3 +1,7 @@
+/*This portion of the plugin is designed so when players join the cloud server it will
+ * check the players  inventory for the gold, then kick the player (//TODO there to add the send back to main)
+ * if they do not have the gold, or if they have any banned items.  
+ */ 
 package com.imdeity.DeityKingdomsDev.DeityNether.helpers;
 
 import org.bukkit.Material;
@@ -15,9 +19,23 @@ public class InventoryRemoval {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PlayerInventory inventory = player.getInventory();
-		Item gold = new Item (Material.GOLD_INGOT, 2); //I'm not sure why I am getting an error on the "new Item" 
+		Item gold = new Item (Material.GOLD_INGOT, 2//TODO add a constant); //I'm not sure why I am getting an error on the "new Item" 
 		int amount;
 		Item stone = new Item (Material.STONE, amount>0);
+		Item grass = new Item (Material.GRASS, amount>0);
+		Item dirt = new Item (Material.DIRT, amount>0);
+		Item cobblestone = new Item (Material.COBBLESTONE, amount>0);
+		Item planks = new Item (Material.WOOD, amount>0);
+		Item saplings = new Item (Material.SAPLING, amount>0);
+		Item bedrock = new Item (Material.BEDROCK, amount>0);
+		Item sand = new Item (Material.SAND, amount>0);
+		Item gravel = new Item (Material.GRAVEL, amount>0);
+		Item gore = new Item (Material.GOLD_ORE, amount>0);
+		Item iore = new Item (Material.IRON_ORE, amount>0);
+		Item core = new Item (Material.COAL_ORE, amount>0);
+		Item log = new Item (Material.LOG, amount>0);
+		Item leaves = new Item (Material.LEAVES, amount>0);
+		Item sponge = new Item (Material.SPONGE, amount>0);
 		
 		if (inventory.contains(gold)) {
 			inventory.remove(gold);
