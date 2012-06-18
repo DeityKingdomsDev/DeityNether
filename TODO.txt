@@ -19,7 +19,7 @@ Mobs: Mobs need not be altered with one exception. Pigman should have a 10% chan
 
 
 - Finish mySQL
-- check inventory and take payment for entering nether (mbon note: I'll get to this ASAP, I also found out I can edit files from github.com :))
+- check inventory and take payment for entering nether (mbon note: Very buggy atm)
 - Make auto re-generating world and saving of world file
 - Finish the command class
 		-Cliff
