@@ -14,13 +14,12 @@ import com.imdeity.DeityKingdomsDev.DeityNether.DeityNether;
 
 public class InventoryRemoval {
 	private static DeityNether plugin; 
-}
-   
+   	int c = 1; //TODO move this to the main class
+	int amount;
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PlayerInventory inventory = player.getInventory();
-		Item gold = new Item (Material.GOLD_INGOT, 2//TODO add a constant); //I'm not sure why I am getting an error on the "new Item" 
-		int amount;
+		Item gold = new Item (Material.GOLD_BLOCK, 2*c); 
 		Item stone = new Item (Material.STONE, amount>0);
 		Item grass = new Item (Material.GRASS, amount>0);
 		Item dirt = new Item (Material.DIRT, amount>0);
@@ -37,7 +36,11 @@ public class InventoryRemoval {
 		Item leaves = new Item (Material.LEAVES, amount>0);
 		Item sponge = new Item (Material.SPONGE, amount>0);
 		
-		if (inventory.contains(gold)) {
-			inventory.remove(gold);
+		if(true) {
+			if (inventory.contains(gold)) {
+				inventory.remove(gold);
+			}
 		}
 	}
+	
+}
