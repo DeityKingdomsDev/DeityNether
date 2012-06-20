@@ -1,46 +1,186 @@
-/*This portion of the plugin is designed so when players join the cloud server it will
- * check the players  inventory for the gold, then kick the player (//TODO there to add the send back to main)
- * if they do not have the gold, or if they have any banned items.  
- */ 
 package com.imdeity.DeityKingdomsDev.DeityNether.helpers;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.PlayerInventory;
 
 import com.imdeity.DeityKingdomsDev.DeityNether.DeityNether;
+import com.imdeity.DeityKingdomsDev.DeityNether.helpers.WorldHelper;
 
 public class InventoryRemoval {
-	private static DeityNether plugin; 
-   	int c = 1; //TODO move this to the main class
-	int amount;
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		PlayerInventory inventory = player.getInventory();
-		Item gold = new Item (Material.GOLD_BLOCK, 2*c); 
-		Item stone = new Item (Material.STONE, amount>0);
-		Item grass = new Item (Material.GRASS, amount>0);
-		Item dirt = new Item (Material.DIRT, amount>0);
-		Item cobblestone = new Item (Material.COBBLESTONE, amount>0);
-		Item planks = new Item (Material.WOOD, amount>0);
-		Item saplings = new Item (Material.SAPLING, amount>0);
-		Item bedrock = new Item (Material.BEDROCK, amount>0);
-		Item sand = new Item (Material.SAND, amount>0);
-		Item gravel = new Item (Material.GRAVEL, amount>0);
-		Item gore = new Item (Material.GOLD_ORE, amount>0);
-		Item iore = new Item (Material.IRON_ORE, amount>0);
-		Item core = new Item (Material.COAL_ORE, amount>0);
-		Item log = new Item (Material.LOG, amount>0);
-		Item leaves = new Item (Material.LEAVES, amount>0);
-		Item sponge = new Item (Material.SPONGE, amount>0);
-		
-		if(true) {
-			if (inventory.contains(gold)) {
-				inventory.remove(gold);
-			}
+	private static DeityNether plugin;
+	Player player;
+	Tp tp = movePlayer(player);
+	ItemStack item = inventory.getContents();
+	Gold gold = Material.GOLD_INGOT;
+	for(int i = 0; i<items.length(); i++) {
+		if (item[i].getType==Material.WOOD_SWORD) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.STONE_SWORD) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.IRON_SWORD) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLD_SWORD) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.DIAMOND_SWORD) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.WOOD_SPADE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.IRON_SPADE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLD_SPADE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.DIAMOND_SPADE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.WOOD_PICKAXE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.IRON_PICKAXE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLD_PICKAXE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.DIAMOND_PICKAXE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.WOOD_AXE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.IRON_AXE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLD_AXE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.DIAMOND_AXE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.WOOD_HOE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.IRON_HOE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLD_HOE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.DIAMOND_HOE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.LEATHER_HELMET) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.LEATHER_CHEStpLATE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.LEATHER_LEGGINGS) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.LEATHER_BOOTS) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.IRON_HELMET) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.IRON_CHEStpLATE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.IRON_LEGGINGS) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.IRON_BOOTS) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLD_HELMET) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLD_CHEStpLATE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLD_LEGGINGS) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLD_BOOTS) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.DIAMOND_HELMET) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.DIAMOND_CHEStpLATE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.DIAMOND_LEGGINGS) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.BREAD) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.CAKE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.COOKIE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.MELON) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.MUSHROOM_SOUP) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.RAW_CHICKEN) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.COOKED_CHICKEN) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.RAW_BEEF) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.COOKED_BEEF) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.PORK) { //I couldn't find RAW_PORK
+			tp=true;
+		}
+		else if (item[i].getType==Material.RAW_FISH) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.COOKED_FISH) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.APPLE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.GOLDEN_APPLE) {
+			tp=true;
+		}
+		else if (item[i].getType==Material.ROTTEN_FLESH) {
+			tp=true;
+		}
+		else if (item[i].getType=Material.SPIDER_EYE) {
+			tp=true;
+		}
+		else if(items[1].getAmount()==0) {
+			tp=true;
+		}
+		else {
+			tp=false;
+			player.sendMessage(ChatColor.RED + "Please remove the blacklisted items from you inventory.");
 		}
 	}
-	
+	if (inventory.contains(gold)) {
+		inventory.remove(gold);
+		tp=true;
+	}
 }
