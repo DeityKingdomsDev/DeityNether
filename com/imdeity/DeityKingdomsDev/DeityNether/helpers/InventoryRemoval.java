@@ -10,6 +10,7 @@ import com.imdeity.DeityKingdomsDev.DeityNether.helpers.WorldHelper;
 
 public class InventoryRemoval {
 	private static DeityNether plugin;
+	public static int GOLD_TO_REMOVE = 2;//Gold is now a constant so it can be changed easier
 	Player player;
 	Tp tp = movePlayer(player);
 	ItemStack item = inventory.getContents();
@@ -81,7 +82,7 @@ public class InventoryRemoval {
 		else if (item[i].getType==Material.LEATHER_HELMET) {
 			tp=true;
 		}
-		else if (item[i].getType==Material.LEATHER_CHEStpLATE) {
+		else if (item[i].getType==Material.LEATHER_CHESTPLATE) {
 			tp=true;
 		}
 		else if (item[i].getType==Material.LEATHER_LEGGINGS) {
@@ -93,7 +94,7 @@ public class InventoryRemoval {
 		else if (item[i].getType==Material.IRON_HELMET) {
 			tp=true;
 		}
-		else if (item[i].getType==Material.IRON_CHEStpLATE) {
+		else if (item[i].getType==Material.IRON_CHESTPLATE) {
 			tp=true;
 		}
 		else if (item[i].getType==Material.IRON_LEGGINGS) {
@@ -105,7 +106,7 @@ public class InventoryRemoval {
 		else if (item[i].getType==Material.GOLD_HELMET) {
 			tp=true;
 		}
-		else if (item[i].getType==Material.GOLD_CHEStpLATE) {
+		else if (item[i].getType==Material.GOLD_CHESTPLATE) {
 			tp=true;
 		}
 		else if (item[i].getType==Material.GOLD_LEGGINGS) {
@@ -117,7 +118,7 @@ public class InventoryRemoval {
 		else if (item[i].getType==Material.DIAMOND_HELMET) {
 			tp=true;
 		}
-		else if (item[i].getType==Material.DIAMOND_CHEStpLATE) {
+		else if (item[i].getType==Material.DIAMOND_CHESTPLATE) {
 			tp=true;
 		}
 		else if (item[i].getType==Material.DIAMOND_LEGGINGS) {
@@ -176,11 +177,15 @@ public class InventoryRemoval {
 		}
 		else {
 			tp=false;
-			player.sendMessage(ChatColor.RED + "Please remove the blacklisted items from you inventory.");
+			player.sendMessage(ChatColor.RED + "Please remove the blacklisted item(s) from you inventory.");
 		}
 	}
 	if (inventory.contains(gold)) {
-		inventory.remove(gold);
+		inventory.remove(gold, GOLD_TO_REMOVE);
 		tp=true;
+	}
+	else {
+		tp=false;
+		player.sendMessage(ChatColor.RED + "Please bring" + GOLD_TO_REMOVE + "to enter the nether.");
 	}
 }
