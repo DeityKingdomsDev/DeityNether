@@ -12,12 +12,12 @@ import com.imdeity.DeityKingdomsDev.DeityNether.listeners.PigmanListener;
 
 public class DeityNether extends JavaPlugin {
 	public static int PIGMAN_DROP_GOLD_CHANCE = 10; //Chance for pigman to drop gold - 10 = 10% chance
-	public static int PLAYER_JOIN_NETHER_WAIT_MINUTES = 1440;
+	public static int PLAYER_JOIN_NETHER_WAIT_MINUTES = 1;
 	public static int PLAYER_JOIN_NETHER_WAIT_MILLIS;
 	public static int WORLD_RESET_HOURS = 24;
 	public static int WORLD_RESET_MILLIS;
 	NetherSQL nsql;
-	int lastReset;
+	long lastReset;
 	
 	FileConfiguration config;
 	File configFile;
@@ -30,25 +30,27 @@ public class DeityNether extends JavaPlugin {
 		
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new PlayerChecker(this), 0, 100);
 		
-		configFile = new File(getDataFolder(), "config.yml");
-		config = new YamlConfiguration();
-		
-		if(!configFile.exists()){
-			configFile.getParentFile().mkdirs();
-		}
 		try {
+			configFile = new File(getDataFolder(), "config.yml");
+			config = new YamlConfiguration();
+			
+			if(!configFile.exists()){
+				configFile.getParentFile().mkdirs();
+			}
+			
 			config.load(configFile);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}		
-		if(!config.contains("last-reset")){
-			config.set("last-reset", (int) System.currentTimeMillis());
-			lastReset = (int) System.currentTimeMillis();
-		} else {
-			lastReset = config.getInt("last-reset");
+		} catch (Exception e) {
+			System.out.println("[DeityNether] Config loaded!");
 		}
 		
-		if((int) System.currentTimeMillis() - lastReset > WORLD_RESET_MILLIS){
+		if(!config.contains("last-reset")){
+			config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
+			lastReset = System.currentTimeMillis();
+		} else {
+			lastReset = config.getLong("last-reset");
+		}
+		
+		if(System.currentTimeMillis() - lastReset > WORLD_RESET_MILLIS){
 			WorldHelper.regenerateNether();
 		}
 		

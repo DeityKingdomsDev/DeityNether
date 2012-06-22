@@ -10,7 +10,6 @@ import com.imdeity.DeityKingdomsDev.DeityNether.helpers.WorldHelper;
 
 public class InventoryRemoval {
 	private static DeityNether plugin;
-	public static int GOLD_TO_REMOVE = 2;//Gold is now a constant so it can be changed easier
 	Player player;
 	Tp tp = movePlayer(player);
 	ItemStack item = inventory.getContents();
@@ -169,23 +168,19 @@ public class InventoryRemoval {
 		else if (item[i].getType==Material.ROTTEN_FLESH) {
 			tp=true;
 		}
-		else if (item[i].getType==Material.SPIDER_EYE) {
+		else if (item[i].getType=Material.SPIDER_EYE) {
 			tp=true;
 		}
-		else if(items[i].getAmount()==0) {
+		else if(items[1].getAmount()==0) {
 			tp=true;
 		}
 		else {
 			tp=false;
-			player.sendMessage(ChatColor.RED + "Please remove the blacklisted item(s) from you inventory.");
+			player.sendMessage(ChatColor.RED + "Please remove the blacklisted items from you inventory.");
 		}
 	}
 	if (inventory.contains(gold)) {
-		inventory.remove(gold, GOLD_TO_REMOVE);
+		inventory.remove(gold);
 		tp=true;
-	}
-	else {
-		tp=false;
-		player.sendMessage(ChatColor.RED + "Please bring" + GOLD_TO_REMOVE + "gold to enter the nether.");
 	}
 }
