@@ -169,10 +169,10 @@ public class InventoryRemoval {
 		else if (item[i].getType==Material.ROTTEN_FLESH) {
 			tp=true;
 		}
-		else if (item[i].getType=Material.SPIDER_EYE) {
+		else if (item[i].getType==Material.SPIDER_EYE) {
 			tp=true;
 		}
-		else if(items[1].getAmount()==0) {
+		else if(items[i].getAmount()==0) {
 			tp=true;
 		}
 		else {
@@ -186,6 +186,6 @@ public class InventoryRemoval {
 	}
 	else {
 		tp=false;
-		player.sendMessage(ChatColor.RED + "Please bring" + GOLD_TO_REMOVE + "to enter the nether.");
+		player.sendMessage(ChatColor.RED + "Please bring" + GOLD_TO_REMOVE + "gold to enter the nether.");
 	}
 }
