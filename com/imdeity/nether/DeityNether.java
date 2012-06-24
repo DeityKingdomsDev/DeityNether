@@ -23,6 +23,7 @@ public class DeityNether extends JavaPlugin {
 	public static FileConfiguration config;
 	File configFile;
 	
+	@Override
 	public void onEnable(){
 		this.getCommand("nether").setExecutor(new NetherCommand(this));
 		getServer().getPluginManager().registerEvents(new PigmanListener(this), this);

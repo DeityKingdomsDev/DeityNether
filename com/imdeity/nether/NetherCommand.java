@@ -38,7 +38,13 @@ public class NetherCommand implements CommandExecutor {
 		}else{
 			player.sendMessage(ChatColor.RED + "Usage: " + ChatColor.GREEN + "/nether join");
 		}
-		return true;
+		if(args.length == 1 && args[0].equalsIgnoreCase("leave")) {
+			moveMain(player);
+			return true;
+		} else {
+			player.sendMessage(ChatColor.RED + "Correct usage:" + ChatColor.GREEN + "/nether leave");
+		}
+		return false;
 	}
 
 	private void movePlayer(Player p) {
@@ -52,6 +58,12 @@ public class NetherCommand implements CommandExecutor {
 	private void moveAdmin(Player p) {
 		WorldHelper.addPlayer(p);
 		p.sendMessage(ChatColor.GREEN + "Welcome to the nether, Admin!");
+	}
+	
+	private void moveMain(Player p) {
+		WorldHelper.removePlayer(p);
+		NetherSQL.removePlayer(p);
+		player.sendMessage(ChatColor.BLUE + "Welcome back to the main world! You will be able to revisit the nether in 24 hours!");
 	}
 
 	public boolean playerHasWaited(Player p) {

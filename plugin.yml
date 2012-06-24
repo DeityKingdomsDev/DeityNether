@@ -3,7 +3,7 @@ version: 0.1
 authors: [Cliff777, mbonachea, thejacoborg]
 website: http://www.imdeity.com/
 
-main: com.imdeity.DeityKingdomsDev.DeityNether.DeityNether
+main: com.imdeity.nether
 commands:
   nether:
     description: Base nether command
