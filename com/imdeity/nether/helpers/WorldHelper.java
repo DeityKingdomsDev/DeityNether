@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
@@ -28,6 +29,7 @@ public class WorldHelper {
 	static WorldCreator worldCreator;
 
 	public static void removePlayer(Player p) {
+		World world  = plugin.getServer().getWorld("world");
 		//TODO Add code to move player to the main server
 		//Move the player back to the over world
 		l = new Location(p.getWorld(), 100, 65, 100); //Set 65 to whatever is needed for the main spawn

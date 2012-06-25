@@ -13,6 +13,7 @@ import com.imdeity.nether.listeners.PigmanListener;
 public class DeityNether extends JavaPlugin {
 	public static int PIGMAN_DROP_GOLD_CHANCE = 10; //Chance for pigman to drop gold - 10 = 10% chance
 	public static int PLAYER_JOIN_NETHER_WAIT_MINUTES = 1;
+	//TODO Make above constant reflect SQL Value
 	public static int PLAYER_JOIN_NETHER_WAIT_MILLIS;
 	public static int WORLD_RESET_HOURS = 1;
 	public static int WORLD_RESET_MILLIS;
