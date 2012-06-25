@@ -29,17 +29,15 @@ public class WorldHelper {
 	static WorldCreator worldCreator;
 
 	public static void removePlayer(Player p) {
-		World world  = plugin.getServer().getWorld("world");
 		//TODO Add code to move player to the main server
 		//Move the player back to the over world
-		l = new Location(p.getWorld(), 100, 65, 100); //Set 65 to whatever is needed for the main spawn
+		l = new Location(plugin.getServer().getWorld("world"), 100, 65, 100); //Set 65 to whatever is needed for the main spawn
 		p.teleport(l);
 	}
 	
 	public static void addPlayer(Player p) {
 		//TODO Add code to move player to cloud server
-		//Move the player to the nether
-			l = new Location(p.getWorld(), 0, 65, 0); //Set 65 to whatever is needed for the nether spawn
+			l = new Location(plugin.getServer().getWorld("world_nether"), 0, 65, 0); //Set 65 to whatever is needed for the nether spawn
 			p.teleport(l);
 	}
 
