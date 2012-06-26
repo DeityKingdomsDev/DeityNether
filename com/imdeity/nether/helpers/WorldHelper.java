@@ -42,7 +42,7 @@ public class WorldHelper {
 
 	public static void regenerateNether() {
 		file = new File("world_nether");
-		newFile = new File("world_nether " + cal.getTime());
+		newFile = new File("world_nether";
 		newFile.mkdirs();
 		Bukkit.unloadWorld("world_nether", false);
 		success = file.renameTo(newFile);
