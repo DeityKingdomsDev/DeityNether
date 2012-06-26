@@ -3,6 +3,7 @@ package com.imdeity.nether;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.imdeity.nether.sql.NetherSQL;
@@ -27,6 +28,7 @@ public class PlayerChecker implements Runnable {
 			if((currentTime - map.get(player)) > DeityNether.PLAYER_JOIN_NETHER_WAIT_MILLIS){
 				WorldHelper.removePlayer(player);
 				NetherSQL.removePlayer(player);
+				player.sendMessage(ChatColor.RED + "Your time in the nether is up! You can revisit in 24 hours.");
 			}
 		}
 
