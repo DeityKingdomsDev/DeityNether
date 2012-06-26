@@ -25,7 +25,7 @@ public class NetherCommand implements CommandExecutor {
 		if(args.length == 1 && args[0].equalsIgnoreCase("join")){
 		  if(player.hasPermission("Deity.nether.override")){
 				moveAdmin(player);
-			}else if(player.hasPermission("Deity.nether.general")){
+			} else if(player.hasPermission("Deity.nether.general")){
 				if(playerHasWaited(player)){
 					movePlayer(player);
 				} else {

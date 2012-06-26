@@ -39,7 +39,7 @@ public class NetherSQL {
 	public static boolean sendSQLCommand(String sql) {
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
+				conn = DriverManager.getConnection("jdbc:mysql://mysql09.freemysql.net/deitynether", "mbonachea", "deitynether");
 			}
 			state = conn.prepareStatement(sql);
 			state.execute();
@@ -54,7 +54,7 @@ public class NetherSQL {
 	private static long getLong(String sql){
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
+				conn = DriverManager.getConnection("jdbc:mysql://mysql09.freemysql.net/deitynether", "mbonachea", "deitynether");
 			}
 			state = conn.prepareStatement(sql);
 			result = state.executeQuery();
