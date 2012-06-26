@@ -36,12 +36,10 @@ public class NetherCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
 				return false;
 			}
-		}
-		if(args.length == 1 && args[0].equalsIgnoreCase("leave")) {
+		} else if(args.length == 1 && args[0].equalsIgnoreCase("leave")) {
 			moveMain(player);
 			return true;
-		}
-		if(args.length == 1 && args[0].equalsIgnoreCase("?")) {
+		} else if(args.length == 1 && args[0].equalsIgnoreCase("?")) {
 			if(player.hasPermission("Deity.nether.admin")) {
 				player.sendMessage(ChatColor.AQUA + "Admin Commands:");
 				player.sendMessage(ChatColor.AQUA + "/nether regenerate - Creates a new nether world.");
@@ -49,6 +47,7 @@ public class NetherCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.AQUA + "Commands:");
 				player.sendMessage(ChatColor.AQUA + "/nether join - Teleports you to the nether.");
 				player.sendMessage(ChatColor.AQUA + "/nether leave - Teleports you back to the main world.");
+				return true;
 			}
 			if(player.hasPermission("Deity.nether.join")) {
 				player.sendMessage(ChatColor.AQUA + "Commands:");
@@ -59,8 +58,7 @@ public class NetherCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
 				return false;
 			}
-		}
-		if(args.length == 1 && args[0].equalsIgnoreCase("regenerate")) {
+		} else if(args.length == 1 && args[0].equalsIgnoreCase("regenerate")) {
 			if(player.hasPermission("Deity.nether.admin")) {
 				WorldHelper.regenerateNether();
 				player.sendMessage(ChatColor.RED + "Regenerating nether...");
