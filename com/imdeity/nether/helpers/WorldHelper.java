@@ -30,7 +30,7 @@ public class WorldHelper {
 	public static void removePlayer(Player p) {
 		//TODO Add code to move player to the main server
 		//Move the player back to the over world
-		l = new Location(plugin.getServer().getWorld("world"), 100, 65, 100); //Set 65 to whatever is needed for the main spawn
+		l = new Location(plugin.getServer().getWorld("world"), plugin.getServer().getWorld("world").getSpawnLocation().getX(),plugin.getServer().getWorld("world").getSpawnLocation().getY(),plugin.getServer().getWorld("world").getSpawnLocation().getZ()); //Set 65 to whatever is needed for the main spawn
 		p.teleport(l);
 	}
 	
