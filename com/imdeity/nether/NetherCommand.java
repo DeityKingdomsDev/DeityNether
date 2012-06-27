@@ -1,5 +1,6 @@
 package com.imdeity.nether;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,17 +21,17 @@ public class NetherCommand implements CommandExecutor {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String commadLabel, String[] args) {
 		player = (Player) sender;
 		if(args.length == 1 && args[0].equalsIgnoreCase("join")){
 		  if(player.hasPermission("Deity.nether.override")){
 				moveAdmin(player);
 			} else if(player.hasPermission("Deity.nether.general")){
-				if(playerHasWaited(player)){
+				if(playerHasWaited(player)) {
 					movePlayer(player);
 				} else {
 					player.sendMessage(ChatColor.RED + "Error: You must wait " + ChatColor.GREEN + DeityNether.PLAYER_JOIN_NETHER_WAIT_MINUTES/60 + ChatColor.RED + " hours before entering the nether again.");
-					return true;
+					return false;
 				}
 			} else {
 				player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
@@ -60,8 +61,11 @@ public class NetherCommand implements CommandExecutor {
 			}
 		} else if(args.length == 1 && args[0].equalsIgnoreCase("regenerate")) {
 			if(player.hasPermission("Deity.nether.admin")) {
+				Bukkit.getServer().broadcastMessage(ChatColor.RED + "[DeityNether] Moving players back to the main world for nether reset...");
+				plugin.getServer().getWorld("world_nether").getPlayers();
+				//TODO Kick all players in the world.
 				WorldHelper.regenerateNether();
-				player.sendMessage(ChatColor.RED + "Regenerating nether...");
+				player.sendMessage(ChatColor.RED + "[DeityNether] Regenerating nether...");
 				return true;
 			} else {
 				player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");

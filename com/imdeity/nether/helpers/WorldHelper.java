@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
@@ -30,13 +31,13 @@ public class WorldHelper {
 	public static void removePlayer(Player p) {
 		//TODO Add code to move player to the main server
 		//Move the player back to the over world
-		l = new Location(plugin.getServer().getWorld("world"), plugin.getServer().getWorld("world").getSpawnLocation().getX(),plugin.getServer().getWorld("world").getSpawnLocation().getY(),plugin.getServer().getWorld("world").getSpawnLocation().getZ()); //Set 65 to whatever is needed for the main spawn
+		l = new Location(plugin.getServer().getWorld("world"), plugin.getServer().getWorld("world").getSpawnLocation().getX(),plugin.getServer().getWorld("world").getSpawnLocation().getY(),plugin.getServer().getWorld("world").getSpawnLocation().getZ()); 
 		p.teleport(l);
 	}
 	
 	public static void addPlayer(Player p) {
 		//TODO Add code to move player to cloud server
-			l = new Location(plugin.getServer().getWorld("world_nether"), 0, 65, 0); //Set 65 to whatever is needed for the nether spawn
+			l = new Location(plugin.getServer().getWorld("world_nether"), plugin.getServer().getWorld("world_nether").getSpawnLocation().getX(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getY(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getZ()); 
 			p.teleport(l);
 	}
 
@@ -51,6 +52,7 @@ public class WorldHelper {
 		worldCreator.createWorld();
 		DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
 		System.out.println("[DeityNether] The nether has been reset!");
+		
 	}
 
 }
