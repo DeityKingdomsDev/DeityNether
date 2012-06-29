@@ -1,7 +1,8 @@
 name: DeityNether
 version: 0.1
 authors: [Cliff777, mbonachea, thejacoborg]
-website: http://www.imdeity.com/
+website: http://www.ImDeity.com/
+load: STARTUP
 
 main: com.imdeity.nether.DeityNether
 commands:
