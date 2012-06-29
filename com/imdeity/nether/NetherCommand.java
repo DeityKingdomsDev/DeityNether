@@ -1,6 +1,5 @@
 package com.imdeity.nether;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,7 +29,7 @@ public class NetherCommand implements CommandExecutor {
 				if(playerHasWaited(player)) {
 					movePlayer(player);
 				} else {
-					player.sendMessage(ChatColor.RED + "Error: You must wait " + ChatColor.GREEN + DeityNether.PLAYER_JOIN_NETHER_WAIT_MINUTES/60 + ChatColor.RED + " hours before entering the nether again.");
+					player.sendMessage(ChatColor.RED + "You must wait " + ChatColor.GREEN + DeityNether.PLAYER_JOIN_NETHER_WAIT_MINUTES/60 + ChatColor.RED + " hours before entering the nether again!");
 					return false;
 				}
 			} else {
@@ -41,34 +40,12 @@ public class NetherCommand implements CommandExecutor {
 			moveMain(player);
 			return true;
 		} else if(args.length == 1 && args[0].equalsIgnoreCase("?")) {
-			if(player.hasPermission("Deity.nether.admin")) {
-				player.sendMessage(ChatColor.AQUA + "Player Commands:");
-				player.sendMessage(ChatColor.AQUA + "/nether join - Teleports you to the nether.");
-				player.sendMessage(ChatColor.AQUA + "/nether leave - Teleports you back to the main world.");
-				return true;
-			}
-			if(player.hasPermission("Deity.nether.join")) {
-				player.sendMessage(ChatColor.AQUA + "Commands:");
-				player.sendMessage(ChatColor.AQUA + "/nether join - Teleports you to the nether.");
-				player.sendMessage(ChatColor.AQUA + "/nether leave - Teleports you back to the main world.");
-				return true;
-			} else {
-				player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
-				return false;
-			}
-		} else if(args.length == 1 && args[0].equalsIgnoreCase("regenerate")) {//TODO Remove command
-			if(player.hasPermission("Deity.nether.admin")) {
-				Bukkit.getServer().broadcastMessage(ChatColor.RED + "[DeityNether] Moving players back to the main world for nether reset...");
-				plugin.getServer().getWorld("world_nether").getPlayers();
-				//TODO Kick all players in the world.
-				WorldHelper.regenerateNether();
-				player.sendMessage(ChatColor.RED + "[DeityNether] Regenerating nether...");
-				return true;
-			} else {
-				player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
-				return false;
-			}
-	} else {
+			player.sendMessage(ChatColor.AQUA + "Commands:");
+			player.sendMessage(ChatColor.AQUA + "+......................+");
+			player.sendMessage(ChatColor.GREEN + "/nether join" + ChatColor.AQUA+ "Teleports you to the nether.");
+			player.sendMessage(ChatColor.GREEN + "/nether leave" + ChatColor.AQUA + "Teleports you back to the main world.");
+			return true;
+		} else {
 			player.sendMessage(ChatColor.RED + "Try:" + ChatColor.GREEN + "/nether ?");
 		}
 		return false;
