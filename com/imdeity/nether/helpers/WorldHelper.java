@@ -3,6 +3,7 @@ package com.imdeity.nether.helpers;
 import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -39,9 +40,9 @@ public class WorldHelper {
 			l = new Location(plugin.getServer().getWorld("world_nether"), plugin.getServer().getWorld("world_nether").getSpawnLocation().getX(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getY(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getZ()); 
 			p.teleport(l);
 	}
-	public static void regenerateNether
+	public static void regenerateNether() {
 		boolean success  = (new File("world_nether")).delete();
-		if(!sucess) {
+		if(!success) {
 			getLogger().info("[DeityNether] Nether file deletion failed!");
 		}
 	}
