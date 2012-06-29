@@ -41,12 +41,23 @@ public class WorldHelper {
 			p.teleport(l);
 	}
 	public static void regenerateNether() {
-		Boolean success = (new File("world_nether")).delete();
+		Boolean success = delDir(new File("world_nether"));
 		if(success) {
 			System.out.println("[DeityNether] Nether file deletion failed!");
 		}
 	}
-	
+	public static boolean delDir(File file) {
+			File[] fileList = file.listFiles();
+			for(int i = 0; i<fileList.length; i++) {
+				if(fileList[i].isDirectory()) {
+					delDir(fileList[i]);
+				}
+				else {
+					fileList[i].delete();
+				}
+			}
+			return file.delete();
+	}
 	/*public static void regenerateNether() {
 		world = Bukkit.getWorld("world_nether");
 		//TODO Make this the actual world size

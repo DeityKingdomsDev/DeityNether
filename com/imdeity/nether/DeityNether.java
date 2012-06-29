@@ -49,6 +49,7 @@ public class DeityNether extends JavaPlugin {
 		if(!config.contains("last-reset")){
 			config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
 			lastReset = System.currentTimeMillis();
+			
 		} else {
 			lastReset = config.getLong("last-reset");
 		}
