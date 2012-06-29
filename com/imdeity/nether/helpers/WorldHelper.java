@@ -21,12 +21,13 @@ public class WorldHelper {
 	}
 	
 	static Location l;
-	static File file;
-	static File newFile;
+//	static File file;
+//	static File newFile;
+//	static File fileOld;
+	static World world;
 	static boolean success;
 	static Calendar cal = new GregorianCalendar();
 	static WorldCreator worldCreator;
-
 	public static void removePlayer(Player p) {
 		//TODO Add code to move player to the main server
 		//Move the player back to the over world
@@ -41,16 +42,28 @@ public class WorldHelper {
 	}
 
 	public static void regenerateNether() {
-		file = new File("world_nether");
-		newFile = new File("world_nether_new");
-		newFile.mkdirs();
-		Bukkit.unloadWorld("world_nether", false);
-		success = newFile.renameTo(file);
-		worldCreator = new WorldCreator("world_nether");
-		worldCreator.environment(Environment.NETHER);
-		worldCreator.createWorld();
-		DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
-		if(success) System.out.println("[DeityNether] The nether has been reset!");
-		else System.out.println("[DeityNether] Nether reset failed! :(");
+		world = Bukkit.getWorld("world_nether");
+		//TODO Make this the actual world size
+		for(int x = -10; x<10; x++) {
+			for(int y = -10; y<10; y++) {
+				if(world.regenerateChunk(x,y)) System.out.println("[DeityNether] Regenerated nether chunk at: "+x+"x "+y+"y");
+			}
+		}
+		
+		
+//		file = new File("world_nether");
+//		newFile = new File("world_nether_new");
+//		newFile.mkdirs();
+//		fileOld = new File("world_nether_old");
+//		Bukkit.unloadWorld("world_nether", false);
+//		file.renameTo(fileOld);
+//		success = newFile.renameTo(new File("world_nether"));
+//		worldCreator = new WorldCreator("world_nether");
+//		worldCreator.environment(Environment.NETHER);
+//		worldCreator.createWorld();
+//		System.out.println(file.delete());
+//		DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
+//		if(success) System.out.println("[DeityNether] The nether has been reset!");
+//		else System.out.println("[DeityNether] Nether reset failed! :(");
 	}
 }
