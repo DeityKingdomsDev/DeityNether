@@ -42,10 +42,7 @@ public class NetherCommand implements CommandExecutor {
 			return true;
 		} else if(args.length == 1 && args[0].equalsIgnoreCase("?")) {
 			if(player.hasPermission("Deity.nether.admin")) {
-				player.sendMessage(ChatColor.AQUA + "Admin Commands:");
-				player.sendMessage(ChatColor.AQUA + "/nether regenerate - Creates a new nether world.");
 				player.sendMessage(ChatColor.AQUA + "Player Commands:");
-				player.sendMessage(ChatColor.AQUA + "Commands:");
 				player.sendMessage(ChatColor.AQUA + "/nether join - Teleports you to the nether.");
 				player.sendMessage(ChatColor.AQUA + "/nether leave - Teleports you back to the main world.");
 				return true;
@@ -59,7 +56,7 @@ public class NetherCommand implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
 				return false;
 			}
-		} else if(args.length == 1 && args[0].equalsIgnoreCase("regenerate")) {
+		} else if(args.length == 1 && args[0].equalsIgnoreCase("regenerate")) {//TODO Remove command
 			if(player.hasPermission("Deity.nether.admin")) {
 				Bukkit.getServer().broadcastMessage(ChatColor.RED + "[DeityNether] Moving players back to the main world for nether reset...");
 				plugin.getServer().getWorld("world_nether").getPlayers();
