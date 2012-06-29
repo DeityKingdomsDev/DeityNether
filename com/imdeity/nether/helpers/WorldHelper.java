@@ -25,7 +25,6 @@ public class WorldHelper {
 //	static File newFile;
 //	static File fileOld;
 	static World world;
-	static boolean success;
 	static Calendar cal = new GregorianCalendar();
 	static WorldCreator worldCreator;
 	public static void removePlayer(Player p) {
@@ -40,8 +39,14 @@ public class WorldHelper {
 			l = new Location(plugin.getServer().getWorld("world_nether"), plugin.getServer().getWorld("world_nether").getSpawnLocation().getX(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getY(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getZ()); 
 			p.teleport(l);
 	}
-
-	public static void regenerateNether() {
+	public static void regenerateNether
+		boolean success  = (new File("world_nether")).delete();
+		if(!sucess) {
+			getLogger().info("[DeityNether] Nether file deletion failed!");
+		}
+	}
+	
+	/*public static void regenerateNether() {
 		world = Bukkit.getWorld("world_nether");
 		//TODO Make this the actual world size
 		for(int x = -10; x<10; x++) {
@@ -64,6 +69,6 @@ public class WorldHelper {
 //		System.out.println(file.delete());
 //		DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
 //		if(success) System.out.println("[DeityNether] The nether has been reset!");
-//		else System.out.println("[DeityNether] Nether reset failed! :(");
-	}
+//		else System.out.println("[DeityNether] Nether reset failed! :(")
+	}*/
 }
