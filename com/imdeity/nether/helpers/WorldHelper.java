@@ -25,7 +25,6 @@ public class WorldHelper {
 	static File newFile;
 	static boolean success;
 	static Calendar cal = new GregorianCalendar();
-	
 	static WorldCreator worldCreator;
 
 	public static void removePlayer(Player p) {
@@ -43,16 +42,15 @@ public class WorldHelper {
 
 	public static void regenerateNether() {
 		file = new File("world_nether");
-		newFile = new File("world_nether");
+		newFile = new File("world_nether_new");
 		newFile.mkdirs();
 		Bukkit.unloadWorld("world_nether", false);
-		success = file.renameTo(newFile);
+		success = newFile.renameTo(file);
 		worldCreator = new WorldCreator("world_nether");
 		worldCreator.environment(Environment.NETHER);
 		worldCreator.createWorld();
 		DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
-		System.out.println("[DeityNether] The nether has been reset!");
-		
+		if(success) System.out.println("[DeityNether] The nether has been reset!");
+		else System.out.println("[DeityNether] Nether reset failed! :(");
 	}
-
 }
