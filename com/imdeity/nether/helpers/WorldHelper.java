@@ -41,9 +41,9 @@ public class WorldHelper {
 			p.teleport(l);
 	}
 	public static void regenerateNether() {
-		boolean success  = (new File("world_nether")).delete();
-		if(!success) {
-			getLogger().info("[DeityNether] Nether file deletion failed!");
+		Boolean success = (new File("world_nether")).delete();
+		if(success) {
+			System.out.println("[DeityNether] Nether file deletion failed!");
 		}
 	}
 	
