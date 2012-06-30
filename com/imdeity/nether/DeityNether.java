@@ -15,7 +15,7 @@ public class DeityNether extends JavaPlugin {
 	public static int PLAYER_JOIN_NETHER_WAIT_MINUTES = 1;
 	//TODO Make above constant reflect SQL Value
 	public static int PLAYER_JOIN_NETHER_WAIT_MILLIS;
-	public static int WORLD_RESET_HOURS = (1/60/60);
+	public static int WORLD_RESET_HOURS = 24;
 	public static int WORLD_RESET_MILLIS;
 	public static int GOLD_BLOCK_AMOUNT = 2; //Amount of gold blocks to charge for entry
 	NetherSQL nsql;
