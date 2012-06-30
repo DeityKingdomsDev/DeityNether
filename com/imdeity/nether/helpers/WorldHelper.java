@@ -1,8 +1,15 @@
 package com.imdeity.nether.helpers;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -45,6 +52,12 @@ public class WorldHelper {
 		if(success) {
 			System.out.println("[DeityNether] Nether file deletion failed!");
 		}
+//		worldCreator = new WorldCreator("world_nether");
+//		worldCreator.environment(Environment.NETHER);
+//		worldCreator.seed(3490439034);
+//		worldCreator.createWorld();
+		DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
+		//writeProperties();
 	}
 	public static boolean delDir(File file) {
 			File[] fileList = file.listFiles();
@@ -57,6 +70,38 @@ public class WorldHelper {
 				}
 			}
 			return file.delete();
+	}
+	public static void writeProperties() {
+		FileWriter file_;
+		String line;
+		String f = "server.properties";
+		String f_ = f+"1";
+		try {
+			file_ = new FileWriter(f_);
+			PrintWriter file = new PrintWriter(file_);
+			try {
+				BufferedReader fileIn = new BufferedReader(new FileReader(f));
+				while((line = fileIn.readLine()) != null) {
+					if(!line.contains("level-seed")) {
+						file_.write(line);
+					}
+					else {
+						file_.write("level-seed="+System.currentTimeMillis());
+					}
+				}
+				fileIn.close();
+			}
+			catch(IOException E) {
+				//error
+				System.out.print("[DeityNether] error writing file");
+			}
+			file_.flush();
+			file_.close();
+			(new File(f)).delete();
+			file.flush();
+			file.close();
+			new File(f_).renameTo(new File(f));
+		} catch (IOException e) {}
 	}
 	/*public static void regenerateNether() {
 		world = Bukkit.getWorld("world_nether");
