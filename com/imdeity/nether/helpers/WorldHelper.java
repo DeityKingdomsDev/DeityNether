@@ -44,8 +44,9 @@ public class WorldHelper {
 	
 	public static void addPlayer(Player p) {
 		//TODO Add code to move player to cloud server
-			l = new Location(plugin.getServer().getWorld("world_nether"), plugin.getServer().getWorld("world_nether").getSpawnLocation().getX(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getY(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getZ()); 
-			p.teleport(l);
+			//l = new Location(plugin.getServer().getWorld("world_nether"), plugin.getServer().getWorld("world_nether").getSpawnLocation().getX(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getY(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getZ()); 
+			//p.teleport(l);
+			p.teleport(plugin.getServer().getWorld("world_nether").getSpawnLocation());
 	}
 	public static void regenerateNether() {
 		Boolean success = delDir(new File("world_nether"));
