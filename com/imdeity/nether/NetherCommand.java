@@ -42,8 +42,8 @@ public class NetherCommand implements CommandExecutor {
 		} else if(args.length == 1 && args[0].equalsIgnoreCase("?")) {
 			player.sendMessage(ChatColor.AQUA + "Commands:");
 			player.sendMessage(ChatColor.AQUA + "+......................+");
-			player.sendMessage(ChatColor.GREEN + "/nether join" + ChatColor.AQUA+ "Teleports you to the nether.");
-			player.sendMessage(ChatColor.GREEN + "/nether leave" + ChatColor.AQUA + "Teleports you back to the main world.");
+			player.sendMessage(ChatColor.GREEN + "/nether join" + ChatColor.AQUA+ " Teleports you to the nether.");
+			player.sendMessage(ChatColor.GREEN + "/nether leave" + ChatColor.AQUA + " Teleports you back to the main world.");
 			return true;
 		} else {
 			player.sendMessage(ChatColor.RED + "Try:" + ChatColor.GREEN + "/nether ?");
