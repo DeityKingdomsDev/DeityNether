@@ -1,9 +1,13 @@
 package com.imdeity.nether;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.imdeity.nether.sql.NetherSQL;
@@ -14,9 +18,12 @@ public class NetherCommand implements CommandExecutor {
 	Player player;
 	long lastJoin;
 	long currentTime;
+	private WorldHelper wh;
 
 	public NetherCommand(DeityNether plugin){
 		this.plugin = plugin;
+		wh = new WorldHelper(plugin);
+		
 	}
 
 	@Override
@@ -30,11 +37,11 @@ public class NetherCommand implements CommandExecutor {
 					movePlayer(player);
 				} else {
 					player.sendMessage(ChatColor.RED + "You must wait " + ChatColor.GREEN + DeityNether.PLAYER_JOIN_NETHER_WAIT_MINUTES/60 + ChatColor.RED + " hours before entering the nether again!");
-					return false;
+					return true;
 				}
 			} else {
 				player.sendMessage(ChatColor.RED + "You do not have permission to use that command!");
-				return false;
+				return true;
 			}
 		} else if(args.length == 1 && args[0].equalsIgnoreCase("leave")) {
 			moveMain(player);
@@ -45,29 +52,49 @@ public class NetherCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.GREEN + "/nether join" + ChatColor.AQUA+ " Teleports you to the nether.");
 			player.sendMessage(ChatColor.GREEN + "/nether leave" + ChatColor.AQUA + " Teleports you back to the main world.");
 			return true;
-		} else {
-			player.sendMessage(ChatColor.RED + "Try:" + ChatColor.GREEN + "/nether ?");
+		} else if(args.length == 1 && args[0].equalsIgnoreCase("regen") && player.isOp()){
+			List<Entity> list =  plugin.getServer().getWorld("world_nether").getEntities();
+			for(int i = 0; i < list.size(); i++){
+				Entity e = list.get(i);
+				if(e instanceof Player){
+					e.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
+				}else{
+					
+				}
+			}
+			
+			plugin.config.set("last-reset", (System.currentTimeMillis() * 2));
+			plugin.getServer().shutdown();
+		}else{
+			player.sendMessage(ChatColor.RED + "Try: " + ChatColor.GREEN + "/nether ?");
+
 		}
-		return false;
+		return true;
 	}
 
 	private void movePlayer(Player p) {
 		if(InventoryRemoval.checkInventory(p)){
 			NetherSQL.addPlayer(p);
-			WorldHelper.addPlayer(p);
+			wh.addPlayer(p);
 			p.sendMessage(ChatColor.BLUE + "Welcome to the nether!");
+		}else{
+			p.sendMessage(ChatColor.RED + "You may only bring tools, swords, armor, and food into the nether. Two " + ChatColor.GOLD + "gold blocks " + ChatColor.RED + "will be taken as an entry fee. Please take all other blocks/items out of your inventory.");
 		}
 	}
 	
 	private void moveAdmin(Player p) {
-		WorldHelper.addPlayer(p);
+		wh.addPlayer(p);
 		p.sendMessage(ChatColor.GREEN + "Welcome to the nether, Admin!");
 	}
 	
 	private void moveMain(Player p) {
-		WorldHelper.removePlayer(p);
-		NetherSQL.removePlayer(p);
-		player.sendMessage(ChatColor.BLUE + "Welcome back to the main world! You will be able to revisit the nether in 24 hours!");
+		wh.removePlayer(p);
+		if(p.hasPermission("Deity.nether.override")){
+			
+		}else{
+			NetherSQL.removePlayer(p);
+			player.sendMessage(ChatColor.BLUE + "Welcome back to the main world! You will be able to revisit the nether in 24 hours!");
+		}
 	}
 
 	public boolean playerHasWaited(Player p) {
@@ -76,7 +103,7 @@ public class NetherCommand implements CommandExecutor {
 		if(currentTime - lastJoin > DeityNether.PLAYER_JOIN_NETHER_WAIT_MILLIS){
 			return true;
 		} else {
-			return false;
+			return true;
 		}
 
 	}

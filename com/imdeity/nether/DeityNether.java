@@ -19,6 +19,7 @@ public class DeityNether extends JavaPlugin {
 	public static int WORLD_RESET_MILLIS;
 	public static int GOLD_BLOCK_AMOUNT = 2; //Amount of gold blocks to charge for entry
 	NetherSQL nsql;
+	private WorldHelper wh;
 	long lastReset;
 	
 	public static FileConfiguration config;
@@ -26,6 +27,7 @@ public class DeityNether extends JavaPlugin {
 	
 	@Override
 	public void onEnable(){
+		wh = new WorldHelper(this);
 		this.getCommand("nether").setExecutor(new NetherCommand(this));
 		getServer().getPluginManager().registerEvents(new PigmanListener(this), this);
 		PLAYER_JOIN_NETHER_WAIT_MILLIS = PLAYER_JOIN_NETHER_WAIT_MINUTES * 60 * 1000;
@@ -53,9 +55,9 @@ public class DeityNether extends JavaPlugin {
 		} else {
 			lastReset = config.getLong("last-reset");
 		}
-		
-		if(System.currentTimeMillis() - lastReset > WORLD_RESET_MILLIS){
-			WorldHelper.regenerateNether();
+		if((System.currentTimeMillis() - lastReset) < WORLD_RESET_MILLIS){
+			
+			wh.regenerateNether();
 		}
 		
 		NetherSQL.checkTables();

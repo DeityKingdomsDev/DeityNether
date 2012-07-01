@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 import com.imdeity.nether.*;
 
 public class WorldHelper {
-	private static DeityNether plugin;
+	private final DeityNether plugin;
 	
 	public WorldHelper(DeityNether plugin){
 		this.plugin = plugin;
@@ -36,16 +36,16 @@ public class WorldHelper {
 	static Calendar cal = new GregorianCalendar();
 	static WorldCreator worldCreator;
 	
-	public static void removePlayer(Player p) {
+	public void removePlayer(Player p) {
 		//TODO: Move player back to main server
 		p.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
 	}
 	
-	public static void addPlayer(Player p) {
+	public void addPlayer(Player p) {
 		//TODO: Move player to cloud server
 			p.teleport(plugin.getServer().getWorld("world_nether").getSpawnLocation());
 	}
-	public static void regenerateNether() {
+	public void regenerateNether() {
 		Boolean success = delDir(new File("world_nether"));
 		if(success) {
 			System.out.println("[DeityNether] Nether file deletion failed!");

@@ -13,12 +13,14 @@ public class PlayerChecker implements Runnable {
 	private final DeityNether plugin;
 	Player player;
 	long currentTime;
+	private WorldHelper wh;
 	
 	public static HashMap<Player, Long> map = new HashMap<Player, Long>();
 	public static ArrayList<Player> playersInNether = new ArrayList<Player>();
 	
 	public PlayerChecker(DeityNether plugin){
 		this.plugin = plugin;
+		wh = new WorldHelper(plugin);
 	}
 	@Override
 	public void run() {
@@ -26,7 +28,7 @@ public class PlayerChecker implements Runnable {
 			currentTime = System.currentTimeMillis();
 			player = playersInNether.get(i);
 			if((currentTime - map.get(player)) > DeityNether.PLAYER_JOIN_NETHER_WAIT_MILLIS){
-				WorldHelper.removePlayer(player);
+				wh.removePlayer(player);
 				NetherSQL.removePlayer(player);
 				player.sendMessage(ChatColor.RED + "Your time in the nether is up! You can revisit in 24 hours.");
 			}

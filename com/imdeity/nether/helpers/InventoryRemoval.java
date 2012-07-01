@@ -27,11 +27,12 @@ public class InventoryRemoval {
 		verification = 0;
 		hasGold = false;
 		inv = p.getInventory();
+		
 		if(inv.contains(gold)){
 			hasGold = true;
 			inv.remove(gold);
 		}else{
-			hasGold = false;
+			return false;
 		}
 
 		for(int i = 0; i < inv.getSize(); i++) {
@@ -45,9 +46,10 @@ public class InventoryRemoval {
 			}
 		}
 
-		if(verification == 36 && hasGold == true) {
+		if(verification == 36 && hasGold) {
 			return true;
 		}else{
+			inv.addItem(gold);
 			p.sendMessage(ChatColor.RED + "You may only bring tools, swords, armor, and food into the nether. Two " + ChatColor.GOLD + "gold blocks " + ChatColor.RED + "will be taken as an entry fee. Please take all other blocks/items out of your inventory.");
 		}
 
