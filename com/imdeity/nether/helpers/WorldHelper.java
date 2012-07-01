@@ -35,17 +35,14 @@ public class WorldHelper {
 	static World world;
 	static Calendar cal = new GregorianCalendar();
 	static WorldCreator worldCreator;
+	
 	public static void removePlayer(Player p) {
-		//TODO Add code to move player to the main server
-		//Move the player back to the over world
-		l = new Location(plugin.getServer().getWorld("world"), plugin.getServer().getWorld("world").getSpawnLocation().getX(),plugin.getServer().getWorld("world").getSpawnLocation().getY(),plugin.getServer().getWorld("world").getSpawnLocation().getZ()); 
-		p.teleport(l);
+		//TODO: Move player back to main server
+		p.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
 	}
 	
 	public static void addPlayer(Player p) {
-		//TODO Add code to move player to cloud server
-			//l = new Location(plugin.getServer().getWorld("world_nether"), plugin.getServer().getWorld("world_nether").getSpawnLocation().getX(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getY(), plugin.getServer().getWorld("world_nether").getSpawnLocation().getZ()); 
-			//p.teleport(l);
+		//TODO: Move player to cloud server
 			p.teleport(plugin.getServer().getWorld("world_nether").getSpawnLocation());
 	}
 	public static void regenerateNether() {
