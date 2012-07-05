@@ -12,12 +12,12 @@ import com.imdeity.nether.listeners.PigmanListener;
 
 public class DeityNether extends JavaPlugin {
 	public static int PIGMAN_DROP_GOLD_CHANCE = 10; //Chance for pigman to drop gold - 10 = 10% chance
-	public static int PLAYER_JOIN_NETHER_WAIT_MINUTES = 1;
-	//TODO Make above constant reflect SQL Value
+	public static int PLAYER_JOIN_NETHER_WAIT_MINUTES = 60;
 	public static int PLAYER_JOIN_NETHER_WAIT_MILLIS;
 	public static int WORLD_RESET_HOURS = 24;
 	public static int WORLD_RESET_MILLIS;
 	public static int GOLD_BLOCK_AMOUNT = 2; //Amount of gold blocks to charge for entry
+	public static int TIME_LEFT;
 	NetherSQL nsql;
 	private WorldHelper wh;
 	long lastReset;
@@ -31,6 +31,7 @@ public class DeityNether extends JavaPlugin {
 		this.getCommand("nether").setExecutor(new NetherCommand(this));
 		getServer().getPluginManager().registerEvents(new PigmanListener(this), this);
 		PLAYER_JOIN_NETHER_WAIT_MILLIS = PLAYER_JOIN_NETHER_WAIT_MINUTES * 60 * 1000;
+		TIME_LEFT = //TODO: Get time left.
 		WORLD_RESET_MILLIS = WORLD_RESET_HOURS * 60 * 60 * 1000;
 		
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new PlayerChecker(this), 0, 100);

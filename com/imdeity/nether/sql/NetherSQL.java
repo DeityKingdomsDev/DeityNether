@@ -33,7 +33,8 @@ public class NetherSQL {
 	}
 
 	public static void checkTables(){
-		sendSQLCommand("CREATE TABLE IF NOT EXISTS nether (`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, `player_name` VARCHAR(16) NOT NULL, `enter_time` BIGINT(20) NOT NULL, `leave_time` BIGINT(20) NOT NULL, `duration` BIGINT(20) NOT NULL, `duration_mins` INT(10) NOT NULL, PRIMARY KEY(`id`))");                       
+		sendSQLCommand("CREATE TABLE IF NOT EXISTS nether_action_log (`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, `player_name` VARCHAR(16) NOT NULL, `enter_time` BIGINT(20) NOT NULL, `leave_time` BIGINT(20) NOT NULL, `duration` BIGINT(20) NOT NULL, `duration_mins` INT(10) NOT NULL, PRIMARY KEY(`id`))");      
+		sendSQLCommand("CREATE TABLE IF NOT EXISTS nether_stats (`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, `player_name` VARCHAR(16) NOT NULL UNIQUE, `enter_time` BIGINT(20) NOT NULL, `leave_time` BIGINT(20) NOT NULL, `duration` BIGINT(20) NOT NULL, `duration_mins` INT(10) NOT NULL, PRIMARY KEY(`id`))");      
 	}
 
 	public static boolean sendSQLCommand(String sql) {
@@ -82,17 +83,16 @@ public class NetherSQL {
 	public static void addPlayer(Player p) {
 		name = p.getName();
 		currentTime = System.currentTimeMillis();
-		sendSQLCommand("INSERT INTO `nether` (`player_name`, `enter_time`, `leave_time`, `duration`, `duration_mins`) VALUES ('" + name + "', " + currentTime + ", 0, 0, 0)");
+		sendSQLCommand("INSERT INTO `nether_action_log` (`player_name`, `enter_time`, `leave_time`, `duration`, `duration_mins`) VALUES ('" + name + "', " + currentTime + ", 0, 0, 0)");
 		PlayerChecker.playersInNether.add(p);
 		PlayerChecker.map.put(p, currentTime);
 	}
 
 	public static void removePlayer(Player p) {
-		sendSQLCommand("UPDATE `nether` SET `leave_time`=" + System.currentTimeMillis() + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
-		sendSQLCommand("UPDATE `nether` SET `duration`=" + (System.currentTimeMillis() - PlayerChecker.map.get(p)) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
-		sendSQLCommand("UPDATE `nether` SET `duration_mins`=" + (((System.currentTimeMillis() - PlayerChecker.map.get(p))/1000)/60) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
+		sendSQLCommand("UPDATE `nether_stats` SET `leave_time`=" + System.currentTimeMillis() + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
+		sendSQLCommand("UPDATE `nether_stats` SET `duration`=" + (System.currentTimeMillis() - PlayerChecker.map.get(p)) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
+		sendSQLCommand("UPDATE `nether_stats` SET `duration_mins`=" + (((System.currentTimeMillis() - PlayerChecker.map.get(p))/1000)/60) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
 		PlayerChecker.playersInNether.remove(p);
 		PlayerChecker.map.remove(p);
-
 	}
 }

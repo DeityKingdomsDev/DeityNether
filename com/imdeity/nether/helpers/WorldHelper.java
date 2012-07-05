@@ -6,16 +6,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 
@@ -46,8 +40,8 @@ public class WorldHelper {
 			p.teleport(plugin.getServer().getWorld("world_nether").getSpawnLocation());
 	}
 	public void regenerateNether() {
-		Boolean success = delDir(new File("world_nether"));
-		if(success) {
+		boolean success = delDir(new File("world_nether"));
+		if(!success) {
 			System.out.println("[DeityNether] Nether file deletion failed!");
 		}
 //		worldCreator = new WorldCreator("world_nether");
