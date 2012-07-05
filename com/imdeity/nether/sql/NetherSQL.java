@@ -40,7 +40,7 @@ public class NetherSQL {
 	public static boolean sendSQLCommand(String sql) {
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost/cliff", "mbon", "mbon");
 			}
 			state = conn.prepareStatement(sql);
 			state.execute();
@@ -55,7 +55,7 @@ public class NetherSQL {
 	private static long getLong(String sql){
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost/cliff", "mbon", "mbon");
 			}
 			state = conn.prepareStatement(sql);
 			result = state.executeQuery();
@@ -84,6 +84,7 @@ public class NetherSQL {
 		name = p.getName();
 		currentTime = System.currentTimeMillis();
 		sendSQLCommand("INSERT INTO `nether_action_log` (`player_name`, `enter_time`, `leave_time`, `duration`, `duration_mins`) VALUES ('" + name + "', " + currentTime + ", 0, 0, 0)");
+		sendSQLCommand("UPDATE 'nether_stats' SET 'enter_time'=" + System.currentTimeMillis() + " WHERE 'player_name'=" + p.getName());
 		PlayerChecker.playersInNether.add(p);
 		PlayerChecker.map.put(p, currentTime);
 	}
@@ -92,6 +93,9 @@ public class NetherSQL {
 		sendSQLCommand("UPDATE `nether_stats` SET `leave_time`=" + System.currentTimeMillis() + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
 		sendSQLCommand("UPDATE `nether_stats` SET `duration`=" + (System.currentTimeMillis() - PlayerChecker.map.get(p)) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
 		sendSQLCommand("UPDATE `nether_stats` SET `duration_mins`=" + (((System.currentTimeMillis() - PlayerChecker.map.get(p))/1000)/60) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
+		sendSQLCommand("UPDATE `nether_action_log` SET `leave_time`=" + System.currentTimeMillis() + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
+		sendSQLCommand("UPDATE `nether_action_log` SET `duration`=" + (System.currentTimeMillis() - PlayerChecker.map.get(p)) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
+		sendSQLCommand("UPDATE `nether_action_log` SET `duration_mins`=" + (((System.currentTimeMillis() - PlayerChecker.map.get(p))/1000)/60) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
 		PlayerChecker.playersInNether.remove(p);
 		PlayerChecker.map.remove(p);
 	}
