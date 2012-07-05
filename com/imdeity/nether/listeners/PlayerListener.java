@@ -10,7 +10,6 @@ import com.imdeity.nether.sql.NetherSQL;
 
 public class PlayerListener implements Listener {
 	private final DeityNether plugin;
-	Player player;
 	
 	public PlayerListener(DeityNether plugin) {
 		this.plugin = plugin;
@@ -18,6 +17,7 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
 		if(player.getWorld().getName().equals("world_nether")) {
 			NetherSQL.removePlayer(player);
 			player.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
