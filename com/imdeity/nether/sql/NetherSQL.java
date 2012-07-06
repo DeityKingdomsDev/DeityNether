@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import org.bukkit.entity.Player;
 
@@ -19,6 +22,8 @@ public class NetherSQL {
 	static ResultSet result;
 	static long resultInt;
 	static long last;
+	public static java.sql.Date sqlDate;
+	public static Timestamp ts;
 
 	public NetherSQL() {
 
@@ -33,15 +38,26 @@ public class NetherSQL {
 	}
 
 	public static void checkTables(){
-		sendSQLCommand("CREATE TABLE IF NOT EXISTS nether_action_log (`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, `player_name` VARCHAR(16) NOT NULL, `enter_time` BIGINT(20) NOT NULL, `leave_time` BIGINT(20) NOT NULL, `duration` BIGINT(20) NOT NULL, `duration_mins` INT(10) NOT NULL, PRIMARY KEY(`id`))");      
-		sendSQLCommand("CREATE TABLE IF NOT EXISTS nether_stats (`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, `player_name` VARCHAR(16) NOT NULL UNIQUE, `enter_time` BIGINT(20) NOT NULL, `leave_time` BIGINT(20) NOT NULL, `duration` BIGINT(20) NOT NULL, `duration_mins` INT(10) NOT NULL, PRIMARY KEY(`id`))");      
+		sendSQLCommand("CREATE TABLE IF NOT EXISTS `deity_nether_action_log` ("+
+				"`id` INT( 16 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,"+
+				"`player_name` VARCHAR( 32 ) NOT NULL ,"+
+				"`action_type` CHAR( 1 ) NOT NULL ,"+
+				"`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"+
+				") ENGINE = MYISAM COMMENT =  'Nether action log for records of player joins/leaves';");      
+		sendSQLCommand("CREATE TABLE IF NOT EXISTS `deity_nether_stats` ("+
+				"`id` INT( 16 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,"+
+				"`player_name` VARCHAR( 32 ) NOT NULL ,"+
+				"`time_in_nether` INT( 4 ) NOT NULL DEFAULT  '0' COMMENT  'time in seconds',"+
+				"UNIQUE (`player_name`)"+
+				") ENGINE = MYISAM COMMENT =  'Current time in nether record for players';");
 	}
 
 	public static boolean sendSQLCommand(String sql) {
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost/cliff", "mbon", "mbon");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
 			}
+			System.out.println(sql);
 			state = conn.prepareStatement(sql);
 			state.execute();
 			return true;
@@ -52,51 +68,56 @@ public class NetherSQL {
 
 	}
 
-	private static long getLong(String sql){
+	public static ResultSet getResult(String sql) {
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost/cliff", "mbon", "mbon");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
 			}
 			state = conn.prepareStatement(sql);
-			result = state.executeQuery();
-			while(result.next()){
-				resultInt = result.getLong(1);
-			}
-			return resultInt;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return -1;
+			System.out.println(sql);
+			ResultSet result = state.executeQuery();
+			return result;
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			return null;
 		}
-		
 	}
 
-	public static long getLastJoin(Player p){
-		name = p.getName();
-		last = getLong("select max(`enter_time`) from `nether` WHERE `player_name`='" + name + "'");
-		if(last == -1){
-			return -1;
-		} else {
-			return last;
-		}
-
-	}
 	public static void addPlayer(Player p) {
 		name = p.getName();
 		currentTime = System.currentTimeMillis();
-		sendSQLCommand("INSERT INTO `nether_action_log` (`player_name`, `enter_time`, `leave_time`, `duration`, `duration_mins`) VALUES ('" + name + "', " + currentTime + ", 0, 0, 0)");
-		sendSQLCommand("UPDATE 'nether_stats' SET 'enter_time'=" + System.currentTimeMillis() + " WHERE 'player_name'=" + p.getName());
+		sendSQLCommand("INSERT INTO `deity_nether_action_log` (`player_name`, `action_type`, `time`) VALUES ('" + name + "', 'J', NOW())");
 		PlayerChecker.playersInNether.add(p);
 		PlayerChecker.map.put(p, currentTime);
 	}
 
 	public static void removePlayer(Player p) {
-		sendSQLCommand("UPDATE `nether_stats` SET `leave_time`=" + System.currentTimeMillis() + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
-		sendSQLCommand("UPDATE `nether_stats` SET `duration`=" + (System.currentTimeMillis() - PlayerChecker.map.get(p)) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
-		sendSQLCommand("UPDATE `nether_stats` SET `duration_mins`=" + (((System.currentTimeMillis() - PlayerChecker.map.get(p))/1000)/60) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
-		sendSQLCommand("UPDATE `nether_action_log` SET `leave_time`=" + System.currentTimeMillis() + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
-		sendSQLCommand("UPDATE `nether_action_log` SET `duration`=" + (System.currentTimeMillis() - PlayerChecker.map.get(p)) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
-		sendSQLCommand("UPDATE `nether_action_log` SET `duration_mins`=" + (((System.currentTimeMillis() - PlayerChecker.map.get(p))/1000)/60) + " WHERE `player_name`='" + p.getName() + "' AND `enter_time`=" + PlayerChecker.map.get(p));
+		sendSQLCommand("INSERT INTO `deity_nether_action_log` (`player_name`, `action_type`, `time`) VALUES ('" + p.getName() + "', 'L', NOW())");
+
+		ResultSet result = getResult("SELECT * FROM `deity_nether_stats` WHERE `player_name`='" + p.getName() + "'");
+		try{
+			if(!result.next()){
+				sendSQLCommand("INSERT INTO `deity_nether_stats` (`player_name`, `time_in_nether`) VALUES ('" + p.getName() + "', " + ((System.currentTimeMillis() - PlayerChecker.map.get(p))/1000) + ")");
+			}else{
+				sendSQLCommand("UPDATE `deity_nether_stats` SET `time_in_nether`=" + ((System.currentTimeMillis() - PlayerChecker.map.get(p))/1000) + " WHERE `player_name`='" + p.getName() + "'");
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
 		PlayerChecker.playersInNether.remove(p);
 		PlayerChecker.map.remove(p);
+	}
+
+	public static Date getLastJoin(Player p) throws SQLException {
+		ResultSet result = getResult("select max(`time`) from `deity_nether_action_log` WHERE `player_name`='" + p.getName() + "' AND `action_type`='J'");
+		try{
+			ts = result.getTimestamp(1);
+		}catch (Exception e){
+			return null;
+		}
+		System.out.println(ts);
+		Date date = new Date(ts.getTime());
+		return date;
 	}
 }

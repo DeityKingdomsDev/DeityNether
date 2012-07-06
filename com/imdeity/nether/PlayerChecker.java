@@ -27,7 +27,7 @@ public class PlayerChecker implements Runnable {
 		for(int i = 0; i < playersInNether.size(); i++){
 			currentTime = System.currentTimeMillis();
 			player = playersInNether.get(i);
-			if((currentTime - map.get(player)) > DeityNether.PLAYER_JOIN_NETHER_WAIT_MILLIS){
+			if((currentTime - map.get(player)) > DeityNether.NETHER_TIME_LIMIT_MILLIS){
 				wh.removePlayer(player);
 				NetherSQL.removePlayer(player);
 				player.sendMessage(ChatColor.RED + "[DeityNether] Your time in the nether is up! You can revisit in 24 hours.");

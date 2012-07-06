@@ -49,6 +49,11 @@ public class WorldHelper {
 //		worldCreator.seed(3490439034);
 //		worldCreator.createWorld();
 		DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
+		try {
+			DeityNether.config.save(DeityNether.configFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		//writeProperties();
 	}
 	public static boolean delDir(File file) {
