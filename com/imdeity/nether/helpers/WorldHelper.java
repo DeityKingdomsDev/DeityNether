@@ -43,6 +43,7 @@ public class WorldHelper {
 		boolean success = delDir(new File("world_nether"));
 		if(!success) {
 			System.out.println("[DeityNether] Nether file deletion failed!");
+			return;
 		}
 //		worldCreator = new WorldCreator("world_nether");
 //		worldCreator.environment(Environment.NETHER);

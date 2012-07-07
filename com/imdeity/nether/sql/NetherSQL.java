@@ -112,12 +112,17 @@ public class NetherSQL {
 	public static Date getLastJoin(Player p) throws SQLException {
 		ResultSet result = getResult("select max(`time`) from `deity_nether_action_log` WHERE `player_name`='" + p.getName() + "' AND `action_type`='J'");
 		try{
+			result.next();
 			ts = result.getTimestamp(1);
 		}catch (Exception e){
+			e.printStackTrace();
+		}
+		if(ts != null){
+			Date date = new Date(ts.getTime());
+			return date;
+		}else{
 			return null;
 		}
-		System.out.println(ts);
-		Date date = new Date(ts.getTime());
-		return date;
+		
 	}
 }

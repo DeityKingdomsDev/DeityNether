@@ -59,7 +59,7 @@ public class DeityNether extends JavaPlugin {
 		} else {
 			lastReset = config.getLong("last-reset");
 		}
-		if((lastReset + WORLD_RESET_MILLIS) < System.currentTimeMillis()){
+		if((System.currentTimeMillis() - lastReset) > WORLD_RESET_MILLIS){
 			wh.regenerateNether();
 		}
 		

@@ -79,8 +79,8 @@ public class NetherCommand implements CommandExecutor {
 
 				}
 			}
-
-			plugin.config.set("last-reset", 1);
+			plugin.config.set("last-reset", -1);
+			try{ plugin.config.save(plugin.configFile); }catch (Exception e){ e.printStackTrace(); }
 			plugin.getServer().shutdown();
 		}else{
 			player.sendMessage(ChatColor.RED + "[DeityNether] Try: " + ChatColor.GREEN + "/nether ?");

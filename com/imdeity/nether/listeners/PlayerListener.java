@@ -19,8 +19,12 @@ public class PlayerListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if(player.getWorld().getName().equals("world_nether")) {
+			if(player.hasPermission("Deity.nether.override") || player.isOp()){
+				player.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
+			}else{
 			NetherSQL.removePlayer(player);
 			player.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
+			}
 		}
 	}
 }
