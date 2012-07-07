@@ -57,7 +57,6 @@ public class NetherSQL {
 			if(conn == null){
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
 			}
-			System.out.println(sql);
 			state = conn.prepareStatement(sql);
 			state.execute();
 			return true;
@@ -74,7 +73,6 @@ public class NetherSQL {
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
 			}
 			state = conn.prepareStatement(sql);
-			System.out.println(sql);
 			ResultSet result = state.executeQuery();
 			return result;
 		} catch (Exception exception) {

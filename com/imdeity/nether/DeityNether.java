@@ -19,12 +19,13 @@ public class DeityNether extends JavaPlugin {
 	public static int WORLD_RESET_HOURS = 24; //How often the nether is reset
 	public static int WORLD_RESET_MILLIS;
 	public static int GOLD_BLOCK_AMOUNT = 2; //Amount of gold blocks to charge for entry
-	public static int NETHER_TIME_LIMIT_MINUTES = 1; //How long a player can be in the nether
+	public static int NETHER_TIME_LIMIT_MINUTES = 60; //How long a player can be in the nether
 	public static int NETHER_TIME_LIMIT_MILLIS;
 	private WorldHelper wh;
 	long lastReset;
 	public static FileConfiguration config;
 	public static File configFile;
+	public static boolean netherNeedsPlatform = false;
 	
 	@Override
 	public void onEnable(){
@@ -67,6 +68,16 @@ public class DeityNether extends JavaPlugin {
 		
 		NetherSQL nsql = new NetherSQL();
 		
+		try{
+			if(this.getServer().getWorld("world_nether").getBlockAt(4, 64, 4).getTypeId() == 4){
+				netherNeedsPlatform = false;
+			}else{
+				netherNeedsPlatform = true;
+			}
+		}catch (Exception e){
+			netherNeedsPlatform = true; //Block returned null, nether is regenerating
+		}
+		
 	}
 	
 	public void onDisable(){
@@ -76,5 +87,4 @@ public class DeityNether extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
-
 }
