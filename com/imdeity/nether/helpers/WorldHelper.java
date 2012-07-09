@@ -1,11 +1,7 @@
 package com.imdeity.nether.helpers;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import org.bukkit.Location;
@@ -23,12 +19,10 @@ public class WorldHelper {
 	}
 
 	static Location l;
-	//	static File file;
-	//	static File newFile;
-	//	static File fileOld;
 	static World world;
 	static Calendar cal = new GregorianCalendar();
 	static WorldCreator worldCreator;
+	File netherFolder = new File("world_nether");
 
 	public void removePlayer(Player p) {
 		//TODO: Move player back to main server
@@ -46,7 +40,6 @@ public class WorldHelper {
 			for(int i = first.getBlockX(); i < second.getBlockX(); i++){
 				for(int j = first.getBlockZ(); j < second.getBlockZ(); j++){
 					plugin.getServer().getWorld("world_nether").getBlockAt(i, y, j).setTypeId(4);
-					System.out.println(i + "  " + y + "  " + j);
 				}
 			}
 			Location low = new Location(plugin.getServer().getWorld("world_nether"), first.getBlockX(), y+1, first.getBlockZ());
@@ -58,29 +51,26 @@ public class WorldHelper {
 					}
 				}
 			}
-
 		}
 		plugin.netherNeedsPlatform = false;
 		//TODO: Move player to cloud server
 		p.teleport(plugin.getServer().getWorld("world_nether").getSpawnLocation());
 	}
 	public void regenerateNether() {
-		boolean success = delDir(new File("world_nether"));
-		if(!success) {
-			System.out.println("[DeityNether] Nether file deletion failed!");
-			return;
+		if(!netherFolder.exists()){
+			boolean success = delDir(netherFolder);
+			if(!success) {
+				System.out.println("[DeityNether] Nether file deletion failed!");
+				return;
+			}
+
+			DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
+			try {
+				DeityNether.config.save(DeityNether.configFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		//		worldCreator = new WorldCreator("world_nether");
-		//		worldCreator.environment(Environment.NETHER);
-		//		worldCreator.seed(3490439034);
-		//		worldCreator.createWorld();
-		DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
-		try {
-			DeityNether.config.save(DeityNether.configFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		//writeProperties();
 	}
 	public static boolean delDir(File file) {
 		File[] fileList = file.listFiles();
@@ -94,61 +84,5 @@ public class WorldHelper {
 		}
 		return file.delete();
 	}
-	public static void writeProperties() {
-		FileWriter file_;
-		String line;
-		String f = "server.properties";
-		String f_ = f+"1";
-		try {
-			file_ = new FileWriter(f_);
-			PrintWriter file = new PrintWriter(file_);
-			try {
-				BufferedReader fileIn = new BufferedReader(new FileReader(f));
-				while((line = fileIn.readLine()) != null) {
-					if(!line.contains("level-seed")) {
-						file_.write(line);
-					}
-					else {
-						file_.write("level-seed="+System.currentTimeMillis());
-					}
-				}
-				fileIn.close();
-			}
-			catch(IOException E) {
-				//error
-				System.out.print("[DeityNether] error writing file");
-			}
-			file_.flush();
-			file_.close();
-			(new File(f)).delete();
-			file.flush();
-			file.close();
-			new File(f_).renameTo(new File(f));
-		} catch (IOException e) {}
-	}
-	/*public static void regenerateNether() {
-		world = Bukkit.getWorld("world_nether");
-		//TODO Make this the actual world size
-		for(int x = -10; x<10; x++) {
-			for(int y = -10; y<10; y++) {
-				if(world.regenerateChunk(x,y)) System.out.println("[DeityNether] Regenerated nether chunk at: "+x+"x "+y+"y");
-			}
-		}
 
-
-//		file = new File("world_nether");
-//		newFile = new File("world_nether_new");
-//		newFile.mkdirs();
-//		fileOld = new File("world_nether_old");
-//		Bukkit.unloadWorld("world_nether", false);
-//		file.renameTo(fileOld);
-//		success = newFile.renameTo(new File("world_nether"));
-//		worldCreator = new WorldCreator("world_nether");
-//		worldCreator.environment(Environment.NETHER);
-//		worldCreator.createWorld();
-//		System.out.println(file.delete());
-//		DeityNether.config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
-//		if(success) System.out.println("[DeityNether] The nether has been reset!");
-//		else System.out.println("[DeityNether] Nether reset failed! :(")
-	}*/
 }

@@ -33,8 +33,12 @@ public class NetherCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String commadLabel, String[] args) {
 		player = (Player) sender;
 		if(args.length == 1 && args[0].equalsIgnoreCase("join")){
-			if(player.hasPermission("Deity.nether.override") || player.isOp()){
-				moveAdmin(player);
+			if(player.hasPermission("Deity.nether.override")){
+				if(InventoryRemoval.checkInventory(player)){
+					moveOverrider(player);
+				}else{
+					player.sendMessage(ChatColor.RED + "[DeityNether] You may only bring tools, swords, armor, and food into the nether. Two " + ChatColor.GOLD + "gold blocks " + ChatColor.RED + "will be taken as an entry fee. Please take all other blocks/items out of your inventory.");
+				}
 			} else if(player.hasPermission("Deity.nether.general")){
 				try {
 					if(playerHasWaited(player)) {
@@ -99,9 +103,9 @@ public class NetherCommand implements CommandExecutor {
 		}
 	}
 
-	private void moveAdmin(Player p) {
+	private void moveOverrider(Player p) {
 		wh.addPlayer(p);
-		p.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.GREEN + "Welcome to the nether, Admin!");
+		p.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.GREEN + "Welcome to the nether. You will have no time limit. Enjoy your stay!");
 	}
 
 	private void moveMain(Player p) {
@@ -121,7 +125,6 @@ public class NetherCommand implements CommandExecutor {
 			return true;
 		}else{
 			int timeWaited = now.compareTo(lastJoin);
-			System.out.println(timeWaited);
 			if(timeWaited > DeityNether.PLAYER_JOIN_NETHER_WAIT_MILLIS){
 				return true;
 			} else {
