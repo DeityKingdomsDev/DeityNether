@@ -123,4 +123,15 @@ public class NetherSQL {
 		}
 		
 	}
+	public static int getTimeSpent(Player p) throws SQLException {
+		ResultSet result = getResult("select 'time_in_nether' from 'deity_nether_stats' WHERE 'player_name'='" + p.getName() + "'");
+		try {
+			result.next();
+			int spent = result.getInt(4) * 60;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return spent;//TODO: Fix return statement
+	}
 }
+

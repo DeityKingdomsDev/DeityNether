@@ -33,7 +33,7 @@ public class NetherCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String commadLabel, String[] args) {
 		player = (Player) sender;
 		if(args.length == 1 && args[0].equalsIgnoreCase("join")){
-			if(player.hasPermission("Deity.nether.override")){
+			if(player.hasPermission("Deity.nether.override") || player.isOp()){
 				if(InventoryRemoval.checkInventory(player)){
 					moveOverrider(player);
 				}else{
@@ -68,11 +68,22 @@ public class NetherCommand implements CommandExecutor {
 			}
 			return true;
 		} else if(args.length == 1 && args[0].equalsIgnoreCase("?")) {
-			player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.AQUA + "Commands:");
-			player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.AQUA + "+......................+");
-			player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.GREEN + "/nether join" + ChatColor.AQUA+ " Teleports you to the nether.");
-			player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.GREEN + "/nether leave" + ChatColor.AQUA + " Teleports you back to the main world.");
-			return true;
+			if(player.hasPermission("Deity.nether.general") || player.hasPermission("Deity.nether.override")) {
+				player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.AQUA + "Commands:");
+				player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.AQUA + "+......................+");
+				player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.GREEN + "/nether join" + ChatColor.AQUA+ " Teleports you to the nether.");
+				player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.GREEN + "/nether leave" + ChatColor.AQUA + " Teleports you back to the main world.");
+				return true;
+			} else if(player.isOp()){
+				player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.AQUA + "Commands:");
+				player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.AQUA + "+......................+");
+				player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.GREEN + "/nether join" + ChatColor.AQUA+ " Teleports you to the nether.");
+				player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.GREEN + "/nether leave" + ChatColor.AQUA + " Teleports you back to the main world.");
+				player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.GREEN + "/nether regen" + ChatColor.AQUA + " Regenerates the nether world.");
+				return true;
+			} else {
+				player.sendMessage(ChatColor.RED + "You do not have permission for this command!");
+			}
 		} else if(args.length == 1 && args[0].equalsIgnoreCase("regen") && player.isOp()){
 			List<Entity> list =  plugin.getServer().getWorld("world_nether").getEntities();
 			for(int i = 0; i < list.size(); i++){
@@ -119,17 +130,14 @@ public class NetherCommand implements CommandExecutor {
 	}
 
 	public boolean playerHasWaited(Player p) throws SQLException {
-		Date now = new Date();
 		Date lastJoin = NetherSQL.getLastJoin(p);
-		if(lastJoin == null){
+		int timeSpent = NetherSQL.getTimeSpent(p);
+		if(lastJoin == null) {
 			return true;
-		}else{
-			int timeWaited = now.compareTo(lastJoin);
-			if(timeWaited > DeityNether.PLAYER_JOIN_NETHER_WAIT_MILLIS){
-				return true;
-			} else {
-				return false;
-			}
+		} else if(timeSpent < DeityNether.NETHER_TIME_LIMIT_MINUTES) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

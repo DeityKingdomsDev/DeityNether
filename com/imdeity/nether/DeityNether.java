@@ -69,7 +69,8 @@ public class DeityNether extends JavaPlugin {
 		NetherSQL nsql = new NetherSQL();
 		
 		try{
-			if(this.getServer().getWorld("world_nether").getBlockAt(4, 64, 4).getTypeId() == 4){
+			int y = 5;
+			if(this.getServer().getWorld("world_nether").getBlockAt(0, y, 0).getTypeId() == 4){
 				netherNeedsPlatform = false;
 			}else{
 				netherNeedsPlatform = true;
