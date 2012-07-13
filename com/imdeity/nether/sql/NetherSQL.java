@@ -24,6 +24,7 @@ public class NetherSQL {
 	static long last;
 	public static java.sql.Date sqlDate;
 	public static Timestamp ts;
+	public static int spent;
 
 	public NetherSQL() {
 
@@ -55,7 +56,7 @@ public class NetherSQL {
 	public static boolean sendSQLCommand(String sql) {
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost/cliff", "mbon", "mbon");
 			}
 			state = conn.prepareStatement(sql);
 			state.execute();
@@ -70,7 +71,7 @@ public class NetherSQL {
 	public static ResultSet getResult(String sql) {
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost/cliff", "mbon", "mbon");
 			}
 			state = conn.prepareStatement(sql);
 			ResultSet result = state.executeQuery();
@@ -121,17 +122,21 @@ public class NetherSQL {
 		}else{
 			return null;
 		}
-		
 	}
-	public static int getTimeSpent(Player p) throws SQLException {
+	
+	public static int getTimeSpent(Player p) throws SQLException {//NPE on 130, & 131
 		ResultSet result = getResult("select 'time_in_nether' from 'deity_nether_stats' WHERE 'player_name'='" + p.getName() + "'");
-		try {
-			result.next();
-			int spent = result.getInt(4) * 60;
+		try{
+			result.next();//NPE
+			spent = result.getInt(4) * 60;//NPE
 		} catch(Exception e) {
 			e.printStackTrace();
+		} 
+		if(spent == 0) {
+			return 0;
+		} else {
+			return spent;
 		}
-		return spent;//TODO: Fix return statement
 	}
 }
 

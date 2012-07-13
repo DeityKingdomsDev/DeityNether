@@ -39,7 +39,7 @@ public class WorldHelper {
 			Location second = new Location(plugin.getServer().getWorld("world_nether"), x+5, y, z+5);
 			for(int i = first.getBlockX(); i < second.getBlockX(); i++){
 				for(int j = first.getBlockZ(); j < second.getBlockZ(); j++){
-					plugin.getServer().getWorld("world_nether").getBlockAt(i, y, j).setTypeId(4);
+					plugin.getServer().getWorld("world_nether").getBlockAt(i, y, j).setTypeId(45);
 				}
 			}
 			Location low = new Location(plugin.getServer().getWorld("world_nether"), first.getBlockX(), y+1, first.getBlockZ());

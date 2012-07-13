@@ -86,6 +86,7 @@ public class NetherCommand implements CommandExecutor {
 			}
 		} else if(args.length == 1 && args[0].equalsIgnoreCase("regen") && player.isOp()){
 			List<Entity> list =  plugin.getServer().getWorld("world_nether").getEntities();
+			plugin.getServer().broadcastMessage(ChatColor.RED + "[DeityNether] The nether is regenerating...");
 			for(int i = 0; i < list.size(); i++){
 				Entity e = list.get(i);
 				if(e instanceof Player){

@@ -1,9 +1,13 @@
 package com.imdeity.nether;
 
 import java.io.File;
+import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.imdeity.nether.sql.NetherSQL;
@@ -69,8 +73,7 @@ public class DeityNether extends JavaPlugin {
 		NetherSQL nsql = new NetherSQL();
 		
 		try{
-			int y = 5;
-			if(this.getServer().getWorld("world_nether").getBlockAt(0, y, 0).getTypeId() == 4){
+			if(this.getServer().getWorld("world_nether").getBlockAt(4, 64, 4).getTypeId() == 45){
 				netherNeedsPlatform = false;
 			}else{
 				netherNeedsPlatform = true;
@@ -82,6 +85,16 @@ public class DeityNether extends JavaPlugin {
 	}
 	
 	public void onDisable(){
+		List<Entity> list =  this.getServer().getWorld("world_nether").getEntities();
+		for(int i = 0; i < list.size(); i++) {
+			Entity entity = list.get(i);
+			if(entity instanceof Player) {
+				entity.teleport(this.getServer().getWorld("world").getSpawnLocation());
+				NetherSQL.removePlayer((Player) entity);
+			} else {
+		
+			}
+		}
 		try {
 		config.save(configFile);
 		} catch (Exception e) {
