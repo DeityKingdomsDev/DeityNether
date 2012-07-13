@@ -85,16 +85,6 @@ public class DeityNether extends JavaPlugin {
 	}
 	
 	public void onDisable(){
-		List<Entity> list =  this.getServer().getWorld("world_nether").getEntities();
-		for(int i = 0; i < list.size(); i++) {
-			Entity entity = list.get(i);
-			if(entity instanceof Player) {
-				entity.teleport(this.getServer().getWorld("world").getSpawnLocation());
-				NetherSQL.removePlayer((Player) entity);
-			} else {
-		
-			}
-		}
 		try {
 		config.save(configFile);
 		} catch (Exception e) {
