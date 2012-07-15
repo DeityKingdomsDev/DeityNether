@@ -124,15 +124,17 @@ public class NetherSQL {
 		}
 	}
 	
-	public static int getTimeSpent(Player p) throws SQLException {//NPE on 130, & 131
-		ResultSet result = getResult("select 'time_in_nether' from 'deity_nether_stats' WHERE 'player_name'='" + p.getName() + "'");
+	public static int getTimeSpent(Player p) throws SQLException {
+		ResultSet result = getResult("SELECT `time_in_nether` FROM `deity_nether_stats` WHERE `player_name`='" + p.getName() + "'");
 		try{
-			result.next();//NPE
-			spent = result.getInt(4) * 60;//NPE
+			if(result == null) {
+				return 0;
+			}
+			result.next();
+			spent = result.getInt(4);
 		} catch(Exception e) {
 			e.printStackTrace();
-		} 
-		if(spent == 0) {
+		} if(result == null) {
 			return 0;
 		} else {
 			return spent;

@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import com.imdeity.nether.sql.NetherSQL;
 import com.imdeity.nether.helpers.*;
+import com.imdeity.nether.DeityNether;
 
 public class NetherCommand implements CommandExecutor {
 	private final DeityNether plugin;
@@ -135,7 +136,7 @@ public class NetherCommand implements CommandExecutor {
 		int timeSpent = NetherSQL.getTimeSpent(p);
 		if(lastJoin == null) {
 			return true;
-		} else if(timeSpent < DeityNether.NETHER_TIME_LIMIT_MINUTES) {
+		} else if(timeSpent * 60 < DeityNether.NETHER_TIME_LIMIT_MINUTES) {
 			return true;
 		} else {
 			return false;

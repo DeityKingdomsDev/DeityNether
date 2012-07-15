@@ -1,13 +1,9 @@
 package com.imdeity.nether;
 
 import java.io.File;
-import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.imdeity.nether.sql.NetherSQL;
