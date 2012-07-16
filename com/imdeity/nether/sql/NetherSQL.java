@@ -126,15 +126,21 @@ public class NetherSQL {
 	
 	public static int getTimeSpent(Player p) throws SQLException {
 		ResultSet result = getResult("SELECT `time_in_nether` FROM `deity_nether_stats` WHERE `player_name`='" + p.getName() + "'");
+		Date lastJoin = getLastJoin(p); 
 		try{
-			if(result == null) {
+			if(!result.next()) {
+				return 0;
+			}
+			else if(lastJoin != null) {
 				return 0;
 			}
 			result.next();
-			spent = result.getInt(4);
+			spent = result.getInt(1);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} if(result == null) {
+			return 0;
+		} else if(lastJoin != null) {
 			return 0;
 		} else {
 			return spent;

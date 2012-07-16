@@ -134,9 +134,10 @@ public class NetherCommand implements CommandExecutor {
 	public boolean playerHasWaited(Player p) throws SQLException {
 		Date lastJoin = NetherSQL.getLastJoin(p);
 		int timeSpent = NetherSQL.getTimeSpent(p);
+		int timeAllowed = DeityNether.NETHER_TIME_LIMIT_MINUTES;
 		if(lastJoin == null) {
 			return true;
-		} else if(timeSpent * 60 < DeityNether.NETHER_TIME_LIMIT_MINUTES) {
+		} else if(lastJoin != null && timeSpent < timeAllowed) {
 			return true;
 		} else {
 			return false;
