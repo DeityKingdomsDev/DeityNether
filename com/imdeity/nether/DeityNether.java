@@ -4,6 +4,8 @@ import java.io.File;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.imdeity.nether.sql.NetherSQL;
@@ -68,19 +70,17 @@ public class DeityNether extends JavaPlugin {
 		
 		NetherSQL nsql = new NetherSQL();
 		
-		try{
-			if(this.getServer().getWorld("world_nether").getBlockAt(4, 64, 4).getTypeId() == 45){
-				netherNeedsPlatform = false;
-			}else{
-				netherNeedsPlatform = true;
-			}
-		}catch (Exception e){
-			netherNeedsPlatform = true; //Block returned null, nether is regenerating
-		}
+		
 		
 	}
 	
 	public void onDisable(){
+		for(Entity e: getServer().getWorld("world_nether").getEntities()){
+			if(e instanceof Player) {
+				wh.removePlayer((Player) e);
+				NetherSQL.removePlayer((Player) e);
+			}
+		}
 		try {
 		config.save(configFile);
 		} catch (Exception e) {

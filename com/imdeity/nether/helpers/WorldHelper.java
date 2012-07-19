@@ -10,6 +10,15 @@ import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 
 import com.imdeity.nether.*;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.LocalWorld;
+import com.sk89q.worldedit.MaxChangedBlocksException;
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.blocks.BaseBlock;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.patterns.Pattern;
+import com.sk89q.worldedit.patterns.SingleBlockPattern;
+import com.sk89q.worldedit.regions.CuboidRegion;
 
 public class WorldHelper {
 	private final DeityNether plugin;
@@ -18,11 +27,11 @@ public class WorldHelper {
 		this.plugin = plugin;
 	}
 
-	static Location l;
+	Location l;
 	static World world;
-	static Calendar cal = new GregorianCalendar();
 	static WorldCreator worldCreator;
 	File netherFolder = new File("world_nether");
+	int y;
 
 	public void removePlayer(Player p) {
 		//TODO: Move player back to main server
@@ -31,31 +40,44 @@ public class WorldHelper {
 
 	public void addPlayer(Player p) {
 		if(plugin.netherNeedsPlatform){
-			Location l = plugin.getServer().getWorld("world_nether").getSpawnLocation();
-			int x = l.getBlockX();
-			int y = l.getBlockY();
-			int z = l.getBlockZ();
-			Location first = new Location(plugin.getServer().getWorld("world_nether"), x-5, y, z-5);
-			Location second = new Location(plugin.getServer().getWorld("world_nether"), x+5, y, z+5);
-			for(int i = first.getBlockX(); i < second.getBlockX(); i++){
-				for(int j = first.getBlockZ(); j < second.getBlockZ(); j++){
-					plugin.getServer().getWorld("world_nether").getBlockAt(i, y, j).setTypeId(45);
-				}
-			}
-			Location low = new Location(plugin.getServer().getWorld("world_nether"), first.getBlockX(), y+1, first.getBlockZ());
-			Location high = new Location(plugin.getServer().getWorld("world_nether"), second.getBlockX(), y+10, second.getBlockZ());
-			for(int k = low.getBlockX(); k < high.getBlockX(); k++){
-				for(int n = low.getBlockY(); n < high.getBlockY(); n++){
-					for(int m = low.getBlockZ(); m < high.getBlockZ(); m++){
-						plugin.getServer().getWorld("world_nether").getBlockAt(k, n, m).setTypeId(0);
-					}
-				}
-			}
+			addNetherSpawn();
 		}
 		plugin.netherNeedsPlatform = false;
 		//TODO: Move player to cloud server
 		p.teleport(plugin.getServer().getWorld("world_nether").getSpawnLocation());
 	}
+	private void addNetherSpawn() {
+		for(int i = 127; i > 0; i--) {
+			if(plugin.getServer().getWorld("world_nether").getBlockAt(0, i, 0).getTypeId() == 0) {
+				l = new Location(plugin.getServer().getWorld("world_nether"), 0, i, 0);
+			}
+		}
+		
+		LocalWorld world = new BukkitWorld(plugin.getServer().getWorld("world_nether"));
+		EditSession e = new EditSession(world, 3000);
+		Vector v1 = new Vector().setX(l.getBlockX() - 5).setY(l.getBlockY()).setZ(l.getBlockZ() -5);
+		Vector v2 = new Vector().setX(l.getBlockX() + 5).setY(l.getBlockY()).setZ(l.getBlockZ() + 5);
+		CuboidRegion region = new CuboidRegion(world, v1, v2);
+		Pattern p = new SingleBlockPattern(new BaseBlock(5));
+		try {
+			e.setBlocks(region, p);
+		} catch (MaxChangedBlocksException e1) {
+			e1.printStackTrace();
+		}
+		
+		Vector vector1 = new Vector().setX(l.getBlockX() - 5).setY(l.getBlockY() + 1).setZ(l.getBlockZ() -5);
+		Vector vector2 = new Vector().setX(l.getBlockX() + 5).setY(l.getBlockY() + 10).setZ(l.getBlockZ() + 5);
+		CuboidRegion region2 = new CuboidRegion(world, vector1, vector2);
+		Pattern p1 = new SingleBlockPattern(new BaseBlock(0));
+		try {
+			e.setBlocks(region2, p);
+		} catch (MaxChangedBlocksException e1){
+			e1.printStackTrace();
+		}
+		 
+		
+	}
+
 	public void regenerateNether() {
 		if(!netherFolder.exists()){
 			boolean success = delDir(netherFolder);
@@ -70,6 +92,7 @@ public class WorldHelper {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			plugin.netherNeedsPlatform = true;
 		}
 	}
 	public static boolean delDir(File file) {

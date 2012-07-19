@@ -56,7 +56,7 @@ public class NetherSQL {
 	public static boolean sendSQLCommand(String sql) {
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost/cliff", "mbon", "mbon");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
 			}
 			state = conn.prepareStatement(sql);
 			state.execute();
@@ -71,7 +71,7 @@ public class NetherSQL {
 	public static ResultSet getResult(String sql) {
 		try {
 			if(conn == null){
-				conn = DriverManager.getConnection("jdbc:mysql://localhost/cliff", "mbon", "mbon");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/cliff", "root", "root");
 			}
 			state = conn.prepareStatement(sql);
 			ResultSet result = state.executeQuery();
