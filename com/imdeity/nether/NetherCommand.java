@@ -32,7 +32,11 @@ public class NetherCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commadLabel, String[] args) {
-		player = (Player) sender;
+		Player player = null;
+		if(sender instanceof Player) {
+			player = (Player) sender;
+		}
+		
 		if(args.length == 1 && args[0].equalsIgnoreCase("join")){
 			if(player.hasPermission("Deity.nether.override") || player.isOp()){
 				if(InventoryRemoval.checkInventory(player)){
@@ -85,25 +89,45 @@ public class NetherCommand implements CommandExecutor {
 			} else {
 				player.sendMessage(ChatColor.RED + "You do not have permission for this command!");
 			}
-		} else if(args.length == 1 && args[0].equalsIgnoreCase("regen") && player.isOp()){
-			List<Entity> list =  plugin.getServer().getWorld("world_nether").getEntities();
-			plugin.getServer().broadcastMessage(ChatColor.RED + "[DeityNether] The nether is regenerating...");
-			for(int i = 0; i < list.size(); i++){
-				Entity e = list.get(i);
-				if(e instanceof Player){
-					e.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
-				}else{
+		} else if(args.length == 1 && args[0].equalsIgnoreCase("regen")){
+			if(sender instanceof Player && player.isOp()) {
+				List<Entity> list =  plugin.getServer().getWorld("world_nether").getEntities();
+				plugin.getServer().broadcastMessage(ChatColor.RED + "[DeityNether] The nether is regenerating...");
+				for(int i = 0; i < list.size(); i++){
+					Entity e = list.get(i);
+					if(e instanceof Player){
+						e.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
+					}else{
 
+					}
 				}
-			}
-			plugin.config.set("last-reset", -1);
-			try{ plugin.config.save(plugin.configFile); }catch (Exception e){ e.printStackTrace(); }
-			plugin.getServer().shutdown();
-		}else{
-			player.sendMessage(ChatColor.RED + "[DeityNether] Try: " + ChatColor.GREEN + "/nether ?");
+				plugin.config.set("last-reset", -1);
+				try{ plugin.config.save(plugin.configFile); }catch (Exception e){ e.printStackTrace(); }
+				plugin.getServer().shutdown();
+			} else if(player == null) {
+				List<Entity> list =  plugin.getServer().getWorld("world_nether").getEntities();
+				plugin.getServer().broadcastMessage(ChatColor.RED + "[DeityNether] The nether is regenerating...");
+				for(int i = 0; i < list.size(); i++){
+					Entity e = list.get(i);
+					if(e instanceof Player){
+						e.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
+					}else{
 
-		}
-		return true;
+					}
+				}
+				plugin.config.set("last-reset", -1);
+				try{ plugin.config.save(plugin.configFile); }catch (Exception e){ e.printStackTrace(); }
+				plugin.getServer().shutdown();
+			}else{
+				player.sendMessage(ChatColor.RED + "[DeityNether] Try: " + ChatColor.GREEN + "/nether ?");
+
+			}
+			return true;
+			}else{
+				player.sendMessage(ChatColor.RED + "[DeityNether] Try: " + ChatColor.GREEN + "/nether ?");
+
+			}
+			return true;	
 	}
 
 	private void movePlayer(Player p) {

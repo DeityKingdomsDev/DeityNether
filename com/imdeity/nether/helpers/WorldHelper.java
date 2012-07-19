@@ -79,7 +79,7 @@ public class WorldHelper {
 	}
 
 	public void regenerateNether() {
-		if(!netherFolder.exists()){
+		if(netherFolder.exists()){
 			boolean success = delDir(netherFolder);
 			if(!success) {
 				System.out.println("[DeityNether] Nether file deletion failed!");
