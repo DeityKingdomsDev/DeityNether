@@ -28,6 +28,7 @@ public class DeityNether extends JavaPlugin {
 	public static FileConfiguration config;
 	public static File configFile;
 	public static boolean netherNeedsPlatform = false;
+	Player player;
 	
 	@Override
 	public void onEnable(){
@@ -77,8 +78,11 @@ public class DeityNether extends JavaPlugin {
 	public void onDisable(){
 		for(Entity e: getServer().getWorld("world_nether").getEntities()){
 			if(e instanceof Player) {
+				player = (Player) e;
 				wh.removePlayer((Player) e);
-				NetherSQL.removePlayer((Player) e);
+				if(!player.hasPermission("Deity.nether.override")){
+					NetherSQL.removePlayer(player);
+				}
 			}
 		}
 		try {

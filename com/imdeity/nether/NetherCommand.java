@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,10 +37,12 @@ public class NetherCommand implements CommandExecutor {
 		if(sender instanceof Player) {
 			player = (Player) sender;
 		}
-		
+
 		if(args.length == 1 && args[0].equalsIgnoreCase("join")){
 			if(player.hasPermission("Deity.nether.override") || player.isOp()){
 				if(InventoryRemoval.checkInventory(player)){
+					moveOverrider(player);
+				}else if(player.getGameMode() == GameMode.CREATIVE){
 					moveOverrider(player);
 				}else{
 					player.sendMessage(ChatColor.RED + "[DeityNether] You may only bring tools, swords, armor, and food into the nether. Two " + ChatColor.GOLD + "gold blocks " + ChatColor.RED + "will be taken as an entry fee. Please take all other blocks/items out of your inventory.");
@@ -91,12 +94,15 @@ public class NetherCommand implements CommandExecutor {
 			}
 		} else if(args.length == 1 && args[0].equalsIgnoreCase("regen")){
 			if(sender instanceof Player && player.isOp()) {
-				List<Entity> list =  plugin.getServer().getWorld("world_nether").getEntities();
 				plugin.getServer().broadcastMessage(ChatColor.RED + "[DeityNether] The nether is regenerating...");
+				List<Entity> list =  plugin.getServer().getWorld("world_nether").getEntities();
 				for(int i = 0; i < list.size(); i++){
 					Entity e = list.get(i);
 					if(e instanceof Player){
-						e.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
+						wh.removePlayer((Player) e);
+						if(!player.hasPermission("Deity.nether.override")){
+							NetherSQL.removePlayer((Player) e);
+						}
 					}else{
 
 					}
@@ -123,11 +129,11 @@ public class NetherCommand implements CommandExecutor {
 
 			}
 			return true;
-			}else{
-				player.sendMessage(ChatColor.RED + "[DeityNether] Try: " + ChatColor.GREEN + "/nether ?");
+		}else{
+			player.sendMessage(ChatColor.RED + "[DeityNether] Try: " + ChatColor.GREEN + "/nether ?");
 
-			}
-			return true;	
+		}
+		return true;	
 	}
 
 	private void movePlayer(Player p) {
@@ -151,7 +157,7 @@ public class NetherCommand implements CommandExecutor {
 
 		}else{
 			NetherSQL.removePlayer(p);
-			player.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.BLUE + "Welcome back to the main world! You will be able to revisit the nether in 24 hours!");
+			p.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.BLUE + "Welcome back to the main world! You will be able to revisit the nether in 24 hours!");
 		}
 	}
 
