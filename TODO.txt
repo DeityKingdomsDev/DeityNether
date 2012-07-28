@@ -14,12 +14,3 @@ Spawn: The spawn location of the world should always be at x:0, z:0, however the
 Inventory: When entering the nether you are allowed to bring any sort of tools/swords/armour/food if any other items are present in their inventory the users will be notified of this and the access denied, until they remove those items from their inventory. As for restrictions on bringing items back, there is none.
 
 Mobs: Mobs need not be altered with one exception. Pigman should have a 10% chance of dropping gold, please also make this 10% a constant that we can change later.
-
-
-
-
-- Finish mySQL
-- check inventory and take payment for entering nether (mbon note: Complete!)
-- Make auto re-generating world and saving of world file
-- Finish the command class
-		-Cliff

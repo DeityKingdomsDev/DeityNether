@@ -25,14 +25,12 @@ public class PlayerDeathListener implements Listener {
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event){
 		if(event.getEntity() instanceof Player && event.getEntity().getWorld().equals(plugin.getServer().getWorld("world_nether"))) {
-				moveMain(plugin.getServer().getPlayer(event.getEntity().getName()));
+			moveMain(plugin.getServer().getPlayer(event.getEntity().getName()));
 		}
 	}
 	private void moveMain(Player p) {
 		worldHelper.removePlayer(p);
-		if(p.hasPermission("Deity.nether.override")){
-			
-		}else{
+		if(!p.hasPermission("Deity.nether.override")){
 			NetherSQL.removePlayer(p);
 			p.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.BLUE + "Welcome back to the main world! You will be able to revisit the nether in 24 hours!");
 		}

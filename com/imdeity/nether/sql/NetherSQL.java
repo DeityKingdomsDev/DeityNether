@@ -18,7 +18,6 @@ public class NetherSQL {
 	static PreparedStatement state;
 	static String sql;
 	static String name;
-	static long currentTime;
 	static ResultSet result;
 	static long resultInt;
 	static long last;
@@ -84,10 +83,8 @@ public class NetherSQL {
 
 	public static void addPlayer(Player p) {
 		name = p.getName();
-		currentTime = System.currentTimeMillis();
 		sendSQLCommand("INSERT INTO `deity_nether_action_log` (`player_name`, `action_type`, `time`) VALUES ('" + name + "', 'J', NOW())");
-		PlayerChecker.playersInNether.add(p);
-		PlayerChecker.map.put(p, currentTime);
+		
 	}
 
 	public static void removePlayer(Player p) {
@@ -103,9 +100,6 @@ public class NetherSQL {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-
-		PlayerChecker.playersInNether.remove(p);
-		PlayerChecker.map.remove(p);
 	}
 
 	public static Date getLastJoin(Player p) throws SQLException {

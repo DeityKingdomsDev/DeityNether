@@ -29,7 +29,7 @@ public class DeityNether extends JavaPlugin {
 	public static File configFile;
 	public static boolean netherNeedsPlatform = false;
 	Player player;
-	
+
 	@Override
 	public void onEnable(){
 		wh = new WorldHelper(this);
@@ -40,41 +40,48 @@ public class DeityNether extends JavaPlugin {
 		PLAYER_JOIN_NETHER_WAIT_MILLIS = PLAYER_JOIN_NETHER_WAIT_HOURS * 60 * 60 * 1000;
 		WORLD_RESET_MILLIS = WORLD_RESET_HOURS * 60 * 60 * 1000;
 		NETHER_TIME_LIMIT_MILLIS = NETHER_TIME_LIMIT_MINUTES * 60 * 1000;
-		
+
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new PlayerChecker(this), 0, 100);
-		
+
 		try {
 			configFile = new File(getDataFolder(), "config.yml");
 			config = new YamlConfiguration();
-			
+
 			if(!configFile.exists()){
 				configFile.getParentFile().mkdirs();
 			}
-			
+
 			config.load(configFile);
 		} catch (Exception e) {
 			System.out.println("[DeityNether] Config loaded!");
 		}
-		
+
 		if(!config.contains("last-reset")){
 			config.set("last-reset", Long.valueOf(System.currentTimeMillis()));
 			lastReset = System.currentTimeMillis();
-			
+
 		} else {
 			lastReset = config.getLong("last-reset");
 		}
 		if((System.currentTimeMillis() - lastReset) > WORLD_RESET_MILLIS){
 			wh.regenerateNether();
 		}
-		
+
 		NetherSQL.checkTables();
-		
+
 		NetherSQL nsql = new NetherSQL();
-		
-		
-		
+
+		try{
+			if(this.getServer().getWorld("world_nether").getBlockAt(4, 64, 4).getTypeId() == 4){
+				netherNeedsPlatform = false;
+			}else{
+				netherNeedsPlatform = true;
+			}
+		}catch (Exception e){
+			netherNeedsPlatform = true; //Block returned null, nether is regenerating
+		}
 	}
-	
+
 	public void onDisable(){
 		for(Entity e: getServer().getWorld("world_nether").getEntities()){
 			if(e instanceof Player) {
@@ -86,7 +93,7 @@ public class DeityNether extends JavaPlugin {
 			}
 		}
 		try {
-		config.save(configFile);
+			config.save(configFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
