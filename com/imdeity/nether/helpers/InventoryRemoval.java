@@ -50,7 +50,6 @@ public class InventoryRemoval {
 			return true;
 		}else{
 			inv.addItem(gold);
-			p.sendMessage(ChatColor.RED + "[DeityNether] You may only bring tools, swords, armor, and food into the nether. Two " + ChatColor.GOLD + "gold blocks " + ChatColor.RED + "will be taken as an entry fee. Please take all other blocks/items out of your inventory.");
 		}
 
 		return false;

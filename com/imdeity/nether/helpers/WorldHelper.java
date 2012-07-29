@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.imdeity.nether.*;
@@ -18,13 +19,14 @@ public class WorldHelper {
 	private final DeityNether plugin;
 	private Util util = new Util();
 	ArrayList<Player> triedToLeave = new ArrayList<Player>();
-
+	public World world;
 
 	public WorldHelper(DeityNether plugin){
 		this.plugin = plugin;
 	}
 
 	public void addPlayer(Player p) throws SQLException {
+		if(p.getWorld() == plugin.getServer().getWorld("world_nether")){ p.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.BLUE + "You're already in the nether."); return; }
 		checkNetherSpawn();
 		if(p.hasPermission("Deity.nether.override") || p.isOp()){
 			if(InventoryRemoval.checkInventory(p)){
@@ -38,7 +40,7 @@ public class WorldHelper {
 			if(util.playerHasWaited(p)) {
 				if(InventoryRemoval.checkInventory(p)){
 					p.teleport(plugin.getServer().getWorld("world_nether").getSpawnLocation());
-					if((plugin.NETHER_TIME_LIMIT_MINUTES/60) ==1){
+					if((plugin.NETHER_TIME_LIMIT_MINUTES/60) == 1){
 						p.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.BLUE + "Welcome to the nether! You will have " + ChatColor.GREEN + "1 " + ChatColor.BLUE + "hour in the nether.");
 					}else{
 						p.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.BLUE + "Welcome to the nether! You will have " + ChatColor.GREEN + plugin.NETHER_TIME_LIMIT_MINUTES/60 + ChatColor.BLUE + "hours in the nether.");
@@ -59,6 +61,7 @@ public class WorldHelper {
 	}
 
 	public void removePlayer(Player p) {
+		if(p.getWorld() == plugin.getServer().getWorld("world")){ p.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.BLUE + "You're not in the nether."); return;}
 		if(p.hasPermission("Deity.nether.override") || p.isOp()){
 			p.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
 		}else if(p.hasPermission("Deity.nether.general")){
@@ -68,6 +71,10 @@ public class WorldHelper {
 			}else{
 				p.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
 				triedToLeave.remove(p);
+				NetherSQL.removePlayer(p);
+				PlayerChecker.playersInNether.remove(p);
+				PlayerChecker.map.remove(p);
+				p.sendMessage(ChatColor.RED + "[DeityNether] " + ChatColor.BLUE + "Welcome to the main world!");
 			}
 		}else{
 			p.sendMessage(ChatColor.RED + "[DeityNether] You do not have permission to use that command!");
@@ -90,7 +97,7 @@ public class WorldHelper {
 			e.printStackTrace();
 		}
 	}
-	public static boolean delDir(File file) {
+	public boolean delDir(File file) {
 		File[] fileList = file.listFiles();
 		for(int i = 0; i<fileList.length; i++) {
 			if(fileList[i].isDirectory()) {
@@ -100,49 +107,55 @@ public class WorldHelper {
 				fileList[i].delete();
 			}
 		}
+		plugin.config.set("nether-spawn-needed", true);
 		return file.delete();
 	}
 
 	public void checkNetherSpawn() {
-		if(plugin.netherNeedsPlatform){
-			for(int i = 127; i > 0; i--) {
+		world = DeityNether.plugin.getServer().getWorld("world_nether");
+
+		if(plugin.config.getBoolean("nether-spawn-needed")){
+			for(int i = 10; i < 127; i++){
 				if(plugin.getServer().getWorld("world_nether").getBlockAt(0, i, 0).getTypeId() == 0){
-					Location one = new Location(plugin.getServer().getWorld("world_nether"), -5, i, -5);
-					Location two = new Location(plugin.getServer().getWorld("world_nether"), 5, i, 5);
-
-					for(int k = one.getBlockX(); k < two.getBlockX(); k++){
-						for(int n = one.getBlockY(); n < two.getBlockY(); n++){
-							for(int m = one.getBlockZ(); m < two.getBlockZ(); m++){
-								plugin.getServer().getWorld("world_nether").getBlockAt(k, n, m).setTypeId(Material.NETHERRACK.getId());
-							}
-						}
-					}
-				}
-				return;
-			}
-
-			Location l = plugin.getServer().getWorld("world_nether").getSpawnLocation();
-			int x = l.getBlockX();
-			int y = l.getBlockY();
-			int z = l.getBlockZ();
-			Location first = new Location(plugin.getServer().getWorld("world_nether"), x-5, y, z-5);
-			Location second = new Location(plugin.getServer().getWorld("world_nether"), x+5, y, z+5);
-			for(int i = first.getBlockX(); i < second.getBlockX(); i++){
-				for(int j = first.getBlockZ(); j < second.getBlockZ(); j++){
-					plugin.getServer().getWorld("world_nether").getBlockAt(i, y, j).setTypeId(4);
-					System.out.println(i + "  " + y + "  " + j);
+					makeNetherrackPlatform(new Location(world, 0, i, 0));
+					world.setSpawnLocation(0, i, 0);
+					System.out.println("Nether spawn set at " + 0 + " " + i + " " + 0);
+					return;
 				}
 			}
-			Location low = new Location(plugin.getServer().getWorld("world_nether"), first.getBlockX(), y+1, first.getBlockZ());
-			Location high = new Location(plugin.getServer().getWorld("world_nether"), second.getBlockX(), y+10, second.getBlockZ());
-			for(int k = low.getBlockX(); k < high.getBlockX(); k++){
-				for(int n = low.getBlockY(); n < high.getBlockY(); n++){
-					for(int m = low.getBlockZ(); m < high.getBlockZ(); m++){
-						plugin.getServer().getWorld("world_nether").getBlockAt(k, n, m).setTypeId(0);
-					}
+			makeSpawnBox(world.getSpawnLocation());
+		}
+	}
+	
+	private void makeNetherrackPlatform(Location loc){
+		System.out.println("Making netherrack platform...");
+		for(int x = loc.getBlockX() - 5; x < loc.getBlockX() + 5; x++){
+			for(int y = loc.getBlockY(); y < loc.getBlockY(); y++){
+				for(int z = loc.getBlockZ() + 5; z < loc.getBlockZ() + 5; z++){
+					world.getBlockAt(x, y, z).setType(Material.NETHERRACK);
 				}
 			}
 		}
-		plugin.netherNeedsPlatform = false;
+	}
+	
+	private void makeSpawnBox(Location loc){
+		System.out.println("Making spawn box");
+		for(int x = loc.getBlockX() - 5; x < loc.getBlockX() + 5; x++){
+			for(int y = loc.getBlockY(); y < loc.getBlockY(); y++){
+				for(int z = loc.getBlockZ() + 5; z < loc.getBlockZ() + 5; z++){
+					world.getBlockAt(x, y, z).setType(Material.COBBLESTONE);
+				}
+			}
+		}
+		
+		for(int x = loc.getBlockX() - 5; x < loc.getBlockX() + 5; x++){
+			for(int y = loc.getBlockY() + 1; y < loc.getBlockY() + 10; y++){
+				for(int z = loc.getBlockZ() - 5; z < loc.getBlockZ() + 5; z++){
+					world.getBlockAt(x, y, z).setType(Material.AIR);
+				}
+			}
+		}
+		world.setSpawnLocation(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+		System.out.println("Nether spawn set at " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ());
 	}
 }

@@ -1,6 +1,7 @@
 package com.imdeity.nether;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,11 +28,12 @@ public class DeityNether extends JavaPlugin {
 	long lastReset;
 	public static FileConfiguration config;
 	public static File configFile;
-	public static boolean netherNeedsPlatform = false;
 	Player player;
+	public static DeityNether plugin;
 
 	@Override
 	public void onEnable(){
+		plugin = this;
 		wh = new WorldHelper(this);
 		this.getCommand("nether").setExecutor(new NetherCommand(this));
 		getServer().getPluginManager().registerEvents(new PigmanListener(this), this);
@@ -63,6 +65,17 @@ public class DeityNether extends JavaPlugin {
 		} else {
 			lastReset = config.getLong("last-reset");
 		}
+		
+		if(!config.contains("nether-spawn-needed")){
+			config.set("nether-spawn-needed", true);
+		}
+		
+		try {
+			config.save(configFile);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
 		if((System.currentTimeMillis() - lastReset) > WORLD_RESET_MILLIS){
 			wh.regenerateNether();
 		}
@@ -70,16 +83,6 @@ public class DeityNether extends JavaPlugin {
 		NetherSQL.checkTables();
 
 		NetherSQL nsql = new NetherSQL();
-
-		try{
-			if(this.getServer().getWorld("world_nether").getBlockAt(4, 64, 4).getTypeId() == 4){
-				netherNeedsPlatform = false;
-			}else{
-				netherNeedsPlatform = true;
-			}
-		}catch (Exception e){
-			netherNeedsPlatform = true; //Block returned null, nether is regenerating
-		}
 	}
 
 	public void onDisable(){
