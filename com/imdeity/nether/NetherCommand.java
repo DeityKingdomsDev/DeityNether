@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -52,7 +53,7 @@ public class NetherCommand implements CommandExecutor {
 				for(int i = 0; i < list.size(); i++){
 					Entity e = list.get(i);
 					if(e instanceof Player){
-						wh.removePlayer((Player) e);
+						e.teleport(plugin.getServer().getWorld("world_nether").getSpawnLocation());
 						if(!player.hasPermission("Deity.nether.override")){
 							NetherSQL.removePlayer((Player) e);
 						}
@@ -70,6 +71,9 @@ public class NetherCommand implements CommandExecutor {
 					Entity e = list.get(i);
 					if(e instanceof Player){
 						e.teleport(plugin.getServer().getWorld("world").getSpawnLocation());
+						if(!((Player) e).hasPermission("Deity.nether.override")){
+							NetherSQL.removePlayer((Player) e);
+						}
 					}else{
 
 					}
