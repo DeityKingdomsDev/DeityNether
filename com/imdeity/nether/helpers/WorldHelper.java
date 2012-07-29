@@ -130,9 +130,10 @@ public class WorldHelper {
 	private void makeNetherrackPlatform(Location loc){
 		System.out.println("Making netherrack platform...");
 		for(int x = loc.getBlockX() - 5; x < loc.getBlockX() + 5; x++){
-			for(int y = loc.getBlockY(); y < loc.getBlockY(); y++){
-				for(int z = loc.getBlockZ() + 5; z < loc.getBlockZ() + 5; z++){
+			for(int y = loc.getBlockY() -1; y < loc.getBlockY(); y++){
+				for(int z = loc.getBlockZ() - 5; z < loc.getBlockZ() + 5; z++){
 					world.getBlockAt(x, y, z).setType(Material.NETHERRACK);
+					System.out.println(x + y + z);
 				}
 			}
 		}
@@ -144,6 +145,7 @@ public class WorldHelper {
 			for(int y = loc.getBlockY(); y < loc.getBlockY(); y++){
 				for(int z = loc.getBlockZ() + 5; z < loc.getBlockZ() + 5; z++){
 					world.getBlockAt(x, y, z).setType(Material.COBBLESTONE);
+					System.out.println(x + y + z);
 				}
 			}
 		}
