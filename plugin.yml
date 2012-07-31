@@ -1,0 +1,8 @@
+name: DeityNether
+version: 0.2
+main: com.imdeity.nether.DeityNether
+author: mbonaborg777
+depend: [DeityAPI]
+commands:
+  nether:
+    aliases: [n]

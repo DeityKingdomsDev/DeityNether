@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/Jacob/Desktop/bukkit/bukkit-1.2.5-R1.3-20120428.031249-2.jar"/>
+	<classpathentry kind="lib" path="/Users/Jacob/Desktop/bukkit/DeityAPI-Public.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
