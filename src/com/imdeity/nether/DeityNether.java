@@ -24,7 +24,7 @@ public class DeityNether extends DeityPlugin {
 		this.config.addDefaultConfigValue("nether-time-limit-minutes", 60);
 		this.config.addDefaultConfigValue("pigman-drop-gold-chance", 0.1D);
 		this.config.addDefaultConfigValue("world-reset-hours", 24);
-		
+
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class DeityNether extends DeityPlugin {
 				"`action_type` CHAR( 1 ) NOT NULL ,"+
 				"`time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"+
 				") ENGINE = MYISAM COMMENT =  'Nether action log for records of player joins/leaves';");
-		
+
 		DeityAPI.getAPI().getDataAPI().getMySQL().write("CREATE TABLE IF NOT EXISTS `deity_nether_stats` ("+
 				"`id` INT( 16 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,"+
 				"`player_name` VARCHAR( 32 ) NOT NULL ,"+
@@ -52,7 +52,7 @@ public class DeityNether extends DeityPlugin {
 
 	@Override
 	protected void initLanguage() {
-		
+
 	}
 
 	@Override
@@ -69,31 +69,31 @@ public class DeityNether extends DeityPlugin {
 
 	@Override
 	protected void initTasks() {
-	getServer().getScheduler().scheduleSyncRepeatingTask(this, new PlayerChecker(), 0, 20 * 60); //Will check if a player's time is up
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, new PlayerChecker(), 0, 20 * 60); //Will check if a player's time is up every minute
 
 	}
-	
-	public static String getWorldName() {
+
+	public String getWorldName() {
 		return plugin.config.getString("world-name");
 	}
-	
-	public static String getNetherName() {
+
+	public String getNetherName() {
 		return plugin.config.getString("nether-name");
 	}
-	
-	public static int getGoldBlockPrice() {
+
+	public int getGoldBlockPrice() {
 		return plugin.config.getInt("gold-block-price");
 	}
-	
-	public static int getNetherTimeLimit() {
+
+	public int getNetherTimeLimit() {
 		return plugin.config.getInt("nether-time-limit-minutes");
 	}
-	
-	public static double getPigmanDropGoldChance() {
+
+	public double getPigmanDropGoldChance() {
 		return plugin.config.getDouble("pigman-drop-gold-chance");
 	}
-	
-	public static int getWorldResetHours() {
+
+	public int getWorldResetHours() {
 		return plugin.config.getInt("world-reset-hours");
 	}
 }
