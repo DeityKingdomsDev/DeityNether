@@ -1,5 +1,5 @@
 name: DeityNether
-version: 1.0
+version: 1.4
 main: com.imdeity.nether.DeityNether
 author: mbonaborg777
 depend: [DeityAPI]
