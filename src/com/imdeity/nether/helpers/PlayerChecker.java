@@ -13,7 +13,6 @@ public class PlayerChecker implements Runnable {
 	public static HashMap<Player, Long> playerMap = new HashMap<Player, Long>();
 	public static ArrayList<Player> playersInNether = new ArrayList<Player>();
 
-	@Override
 	public void run() {
 		
 		for(int i = 0; i < playersInNether.size(); i++) {
