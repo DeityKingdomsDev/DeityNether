@@ -8,17 +8,24 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.imdeity.nether.DeityNether;
+import com.imdeity.nether.sql.NetherSQL;
 
 public class WorldHelper {
 
 	public static World w = DeityNether.plugin.getServer().getWorld(DeityNether.plugin.getNetherName());
 
 	public static void addPlayer(Player p) {
-		//teleport a player to the nether
+		String netherName = DeityNether.plugin.getNetherName();
+		p.teleport(DeityNether.plugin.getServer().getWorld(netherName).getSpawnLocation());
+		NetherSQL.addPlayer(p);
+		PlayerChecker.addPlayer(p);
 	}
 
 	public static void removePlayer(Player p) {
-		//remove a player from the nether
+		String worldName = DeityNether.plugin.getWorldName();
+		p.teleport(DeityNether.plugin.getServer().getWorld(worldName).getSpawnLocation());
+		NetherSQL.removePlayer(p);
+		PlayerChecker.removePlayer(p);
 	}
 
 	public static void regenerateNether() {
