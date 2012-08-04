@@ -12,20 +12,26 @@ import com.imdeity.nether.sql.NetherSQL;
 
 public class WorldHelper {
 
-	public static World w = DeityNether.plugin.getServer().getWorld(DeityNether.plugin.getNetherName());
+	private static World w = DeityNether.plugin.getServer().getWorld(DeityNether.plugin.getNetherName());//Private since it only needs to be used in this class
 
 	public static void addPlayer(Player p) {
-		String netherName = DeityNether.plugin.getNetherName();
-		p.teleport(DeityNether.plugin.getServer().getWorld(netherName).getSpawnLocation());
-		NetherSQL.addPlayer(p);
-		PlayerChecker.addPlayer(p);
+		if(p.hasPermission("deity.nether.override")) {//If they are an overrider, they do not need to be added 
+			p.teleport(w.getSpawnLocation());
+		} else {
+			p.teleport(w.getSpawnLocation());
+			NetherSQL.addPlayer(p);
+			PlayerChecker.addPlayer(p);
+		}
 	}
 
 	public static void removePlayer(Player p) {
-		String worldName = DeityNether.plugin.getWorldName();
-		p.teleport(DeityNether.plugin.getServer().getWorld(worldName).getSpawnLocation());
-		NetherSQL.removePlayer(p);
-		PlayerChecker.removePlayer(p);
+		if(p.hasPermission("deity.nether.override")) {//If they are an overrider, they do not need to be removed
+			p.teleport(w.getSpawnLocation());
+		} else {
+			p.teleport(w.getSpawnLocation());
+			NetherSQL.removePlayer(p);
+			PlayerChecker.removePlayer(p);
+		}
 	}
 
 	public static void regenerateNether() {
