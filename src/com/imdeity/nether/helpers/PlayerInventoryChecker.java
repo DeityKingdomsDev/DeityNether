@@ -2,6 +2,9 @@ package com.imdeity.nether.helpers;
 
 import java.util.ListIterator;
 
+import junit.framework.Test;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -14,7 +17,7 @@ import com.imdeity.deityapi.object.InventoryObject;
 //260, 282, 319, 320, 322, 349, 350, 354, 357, 363, 364, 365, 366, 367, 382
 import com.imdeity.nether.DeityNether;
 
-public class PlayerInventoryChecker extends InventoryObject {
+public class PlayerInventoryChecker extends InventoryObject{
 	static int goldBlockPayment = DeityNether.plugin.getGoldBlockPrice();
 	public static boolean checkInventory(Player player) {
 		Inventory I;
@@ -53,18 +56,21 @@ public class PlayerInventoryChecker extends InventoryObject {
 				}
 				check=false;
 			}
+			
 		}
-		/*
-		 * Jacob/Cliff please fix -mbon
-		 */
-		public static Test(Player player2) {
-			if(check) {
-				int goldBlocks = amountOfItemsInInventory(I, new ItemStack(Material.GOLD_BLOCK));
-				if(goldBlocks<goldBlockPayment) check=false;
-				player2.getInventory().remove(I, new ItemStack(Material.GOLD_BLOCK));
-				player2.getInventory().add(I, new ItemStack(Material.GOLD_BLOCK), goldBlocks-goldBlockPayment);
-			}
-			return check;
+		return Test(I);
+	}
+	public static boolean Test(Inventory I) {
+		boolean check = false;
+		if(check) {
+			int goldBlocks = ((InventoryObject) I).amountOfItemsInInventory(I, new ItemStack(Material.GOLD_BLOCK));
+			if(goldBlocks<goldBlockPayment) check=false;
+			I.remove(new ItemStack(Material.GOLD_BLOCK));
+			PlayerInventoryChecker checker = new PlayerInventoryChecker();
+			ItemStack stack = new ItemStack(Material.GOLD_BLOCK);
+			stack.setAmount(checker.goldBlockPayment);
+			I.addItem(stack);
 		}
+		return true;
 	}
 }
