@@ -8,7 +8,8 @@ import com.imdeity.nether.DeityNether;
 
 
 public class RegenSubCommand extends DeityCommandReceiver {
-
+	Player player;
+	
 	@Override
 	public boolean onConsoleRunCommand(String[] arg0) {
 		DeityAPI.getAPI().getChatAPI().sendGlobalMessage("DeityNether", "The nether is now regenerating...");
@@ -19,10 +20,13 @@ public class RegenSubCommand extends DeityCommandReceiver {
 
 	@Override
 	public boolean onPlayerRunCommand(Player arg0, String[] arg1) {
-		DeityAPI.getAPI().getChatAPI().sendGlobalMessage("DeityNether", "The nether is now regenerating...");
-		DeityNether.plugin.config.set("last-reset", -1);
-		DeityNether.plugin.getServer().shutdown();
-		return true;
+		if(player.isOp()) {
+			DeityAPI.getAPI().getChatAPI().sendGlobalMessage("DeityNether", "The nether is now regenerating...");
+			DeityNether.plugin.config.set("last-reset", -1);
+			DeityNether.plugin.getServer().shutdown();
+			return true;
+		}
+		return false;
 	}
 
 }

@@ -27,11 +27,14 @@ public class JoinSubCommand extends DeityCommandReceiver {
 				if(PlayerInventoryChecker.checkInventory(player)) {//Inventory check
 					WorldHelper.addPlayer(player);
 					DeityAPI.getAPI().getChatAPI().sendPlayerMessage(player, "DeityNether", "Welcome to the nether!");
+					return true;
 				} else {//If they have illegal items
 					DeityAPI.getAPI().getChatAPI().sendPlayerError(player, "DeityNether", "You may only bring tools, swords, armor, and food into the nether. Two gold blocks will be taken as an entry fee. Please take all other blocks/items out of your inventory.");
+					return true;
 				}
 			} else {//If they don't have time
 				DeityAPI.getAPI().getChatAPI().sendPlayerError(player, "DeityNether", "You don't have any time left in the nether! You must wait 24 hours to reenter the nether.");
+				return true;
 			}
 		} else {//If they are already in the nether
 			DeityAPI.getAPI().getChatAPI().sendPlayerError(player, "DeityNether", "You are already in the nether!");
