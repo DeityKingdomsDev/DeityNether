@@ -5,14 +5,17 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.imdeity.deityapi.api.DeityListener;
 import com.imdeity.nether.DeityNether;
 
-public class PigmanListener extends DeityListener {
+public class PigmanListener extends DeityListener implements Listener {
 	double goldNuggetDrop = .10; //percentage
+	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
 		if(event.getEntityType()==EntityType.PIG_ZOMBIE) {
 			event.getDrops().clear();
