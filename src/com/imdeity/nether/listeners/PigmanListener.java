@@ -9,8 +9,10 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.imdeity.deityapi.api.DeityListener;
+import com.imdeity.nether.DeityNether;
 
 public class PigmanListener extends DeityListener {
+	double goldNuggetDrop = .10; //percentage
 	public void onEntityDeath(EntityDeathEvent event) {
 		if(event.getEntityType()==EntityType.PIG_ZOMBIE) {
 			event.getDrops().clear();
@@ -23,7 +25,7 @@ public class PigmanListener extends DeityListener {
 			else if(random>.5) AMOUNT_FLESH=1;
 			flesh.setAmount(AMOUNT_FLESH);
 			event.getDrops().add(flesh);
-			if(random>=.9) event.getDrops().add(gold);
+			if(random>=1-goldNuggetDrop) event.getDrops().add(gold);
 		}
 	}
 
