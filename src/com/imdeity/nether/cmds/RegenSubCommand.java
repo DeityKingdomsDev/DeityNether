@@ -20,13 +20,10 @@ public class RegenSubCommand extends DeityCommandReceiver {
 
 	@Override
 	public boolean onPlayerRunCommand(Player arg0, String[] arg1) {
-		if(player.isOp()) {
 			DeityAPI.getAPI().getChatAPI().sendGlobalMessage("DeityNether", "The nether is now regenerating...");
 			DeityNether.plugin.config.set("last-reset", -1);
 			DeityNether.plugin.getServer().shutdown();
 			return true;
-		}
-		return false;
 	}
 
 }
