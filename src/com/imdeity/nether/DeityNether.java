@@ -12,7 +12,7 @@ public class DeityNether extends DeityPlugin {
 
 	public static DeityNether plugin;
 	public static NetherSpawnChecker netherSpawnChecker;
-	Timer timer = new Timer("NetherSpawnChecker");
+	public static Timer timer = new Timer("NetherSpawnChecker");
 
 	@Override
 	protected void initCmds() {

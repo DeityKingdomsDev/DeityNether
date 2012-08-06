@@ -13,7 +13,7 @@ public class NetherSpawnChecker extends TimerTask {
 			DeityNether.plugin.config.set("nether-needs-spawn", false); //The config reflects the nether having a spawn
 			DeityNether.netherSpawnChecker.cancel(); //We cancel the timertask because the nether has a spawn and we don't need to check anymore
 		}else{
-			DeityNether.netherSpawnChecker.cancel(); //We cancel the timertask - the nether has not reset and will not need a spawn
+			DeityNether.timer.cancel(); //We cancel the timertask - the nether has not reset and will not need a spawn
 		}
 		
 	}

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path=""/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/Jacob/Desktop/bukkit/bukkit-1.2.5-R1.3-20120428.031249-2.jar"/>
-	<classpathentry kind="lib" path="/Users/Jacob/Desktop/bukkit/DeityAPI-Public.jar"/>
-	<classpathentry kind="output" path=""/>
+	<classpathentry kind="lib" path="C:/Users/Matthew/Deity/craftbukkit-1.2.5-R5.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Matthew/Deity/DeityAPI-Public.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -17,9 +17,9 @@ public class PlayerChecker implements Runnable {
 		
 		for(int i = 0; i < playersInNether.size(); i++) { //Go through all players in the nether without having to go through all entities in the nether
 			if(System.currentTimeMillis() - playerMap.get(playersInNether.get(i)) > DeityNether.plugin.getNetherTimeLimit()) {
-				//if the player has spend over an hour in the nether:
+				//if the player has spent over an hour in the nether:
 				WorldHelper.removePlayer(playersInNether.get(i)); //move them back to the main world
-				NetherSQL.removePlayer(); //and if they need to, log and update the database (perms tested in the sql class
+				NetherSQL.removePlayer(playersInNether.get(i)); //and if they need to, log and update the database (perms tested in the sql class
 			}
 		}
 		

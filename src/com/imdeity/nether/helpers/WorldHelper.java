@@ -8,17 +8,30 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.imdeity.nether.DeityNether;
+import com.imdeity.nether.sql.NetherSQL;
 
 public class WorldHelper {
 
-	public static World w = DeityNether.plugin.getServer().getWorld(DeityNether.plugin.getNetherName());
+	private static World w = DeityNether.plugin.getServer().getWorld(DeityNether.plugin.getNetherName());//Private since it only needs to be used in this class
 
 	public static void addPlayer(Player p) {
-		//teleport a player to the nether
+		if(p.hasPermission("deity.nether.override")) {//If they are an overrider, they do not need to be added 
+			p.teleport(w.getSpawnLocation());
+		} else {
+			p.teleport(w.getSpawnLocation());
+			NetherSQL.addPlayer(p);
+			PlayerChecker.addPlayer(p);
+		}
 	}
 
 	public static void removePlayer(Player p) {
-		//remove a player from the nether
+		if(p.hasPermission("deity.nether.override")) {//If they are an overrider, they do not need to be removed
+			p.teleport(w.getSpawnLocation());
+		} else {
+			p.teleport(w.getSpawnLocation());
+			NetherSQL.removePlayer(p);
+			PlayerChecker.removePlayer(p);
+		}
 	}
 
 	public static void regenerateNether() {
