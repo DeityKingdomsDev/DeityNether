@@ -15,6 +15,7 @@ import com.imdeity.nether.DeityNether;
 
 public class PlayerInventoryChecker extends InventoryObject{
 	static int goldBlockPayment = DeityNether.plugin.getGoldBlockPrice();
+	
 	public static boolean checkInventory(Player player) {
 		Inventory I;
 		ListIterator<ItemStack> iterator;
@@ -51,6 +52,7 @@ public class PlayerInventoryChecker extends InventoryObject{
 					endLoop=true;
 				}
 				check=false;
+				endLoop = false;
 			}
 			
 		}

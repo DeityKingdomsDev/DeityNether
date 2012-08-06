@@ -10,9 +10,7 @@ import com.imdeity.nether.helpers.WorldHelper;
 import com.imdeity.nether.sql.NetherSQL;
 
 public class JoinSubCommand extends DeityCommandReceiver {
-	Player player;
 	int netherTimeLimit = DeityNether.plugin.getNetherTimeLimit();	
-	int timeSpent = NetherSQL.getTimeSpent(player);
 	String mainWorld = DeityNether.plugin.getWorldName();
 	
 	@Override
@@ -21,7 +19,8 @@ public class JoinSubCommand extends DeityCommandReceiver {
 	}
 
 	@Override
-	public boolean onPlayerRunCommand(Player arg0, String[] arg1) {
+	public boolean onPlayerRunCommand(Player player, String[] args) {
+		int timeSpent = NetherSQL.getTimeSpent(player);
 		if(player.getWorld().getName().equalsIgnoreCase(mainWorld)) {//Making sure that the player isn't already in the nether
 			if(timeSpent<netherTimeLimit) {//Time check
 				if(PlayerInventoryChecker.checkInventory(player)) {//Inventory check

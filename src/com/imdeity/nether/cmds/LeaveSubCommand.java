@@ -8,7 +8,6 @@ import com.imdeity.nether.DeityNether;
 import com.imdeity.nether.helpers.WorldHelper;
 
 public class LeaveSubCommand extends DeityCommandReceiver {
-	Player player;
 	String netherWorld = DeityNether.plugin.getNetherName();
 	
 	@Override
@@ -17,7 +16,7 @@ public class LeaveSubCommand extends DeityCommandReceiver {
 	}
 
 	@Override
-	public boolean onPlayerRunCommand(Player arg0, String[] arg1) {
+	public boolean onPlayerRunCommand(Player player, String[] arg1) {
 		if(player.getWorld().getName().equalsIgnoreCase(netherWorld)) {//if the player is in the nether
 			WorldHelper.removePlayer(player);
 			DeityAPI.getAPI().getChatAPI().sendPlayerMessage(player, "DeityNether", "Welcome back to the main world! To see how ");

@@ -38,7 +38,7 @@ public class NetherSQL {
 	
 	public static int getTimeSpent(Player player) {
 		String sql = "SELECT * FROM `deity_nether_stats` WHERE `player_name`=?";
-		DatabaseResults query = DeityAPI.getAPI().getDataAPI().getMySQL().readEnhanced(sql, player);
+		DatabaseResults query = DeityAPI.getAPI().getDataAPI().getMySQL().readEnhanced(sql, player.getName());
 		if(query != null && query.hasRows()) {
 			try {
 				return (query.getInteger(0, "time_in_nether"));
