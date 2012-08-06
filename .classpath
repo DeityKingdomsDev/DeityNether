@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Matthew/Deity/craftbukkit-1.2.5-R5.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matthew/Deity/DeityAPI-Public.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
