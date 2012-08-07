@@ -24,10 +24,10 @@ public class PlayerInventoryChecker extends InventoryObject{
 		boolean endLoop = false;
 		I = player.getInventory();
 		iterator = I.iterator();
-		while(iterator.hasNext() && check) {
-			value = iterator.next().getTypeId();
+		while(iterator.hasNext() && check) { //cycle through items in inventory
+			value = iterator.next().getTypeId(); //cycle to next inventory slot
 			while(!endLoop) {
-				if(value>=267 && value<=286) {
+				if(value>=267 && value<=286) { //check if item is between item ids
 					endLoop=true;
 				}
 				else if(value>=297 && value<=317) {
@@ -59,7 +59,7 @@ public class PlayerInventoryChecker extends InventoryObject{
 		return false;
 	}
 	@SuppressWarnings("unused")
-	public static boolean Test(Inventory I) {
+	public static boolean Test(Inventory I) { //remove gold
 		boolean check = false;
 		if(check) {
 			int goldBlocks = ((InventoryObject) I).amountOfItemsInInventory(I, new ItemStack(Material.GOLD_BLOCK));
@@ -70,6 +70,6 @@ public class PlayerInventoryChecker extends InventoryObject{
 			stack.setAmount(PlayerInventoryChecker.goldBlockPayment);
 			I.addItem(stack);
 		}
-		return true;
+		return check;
 	}
 }
