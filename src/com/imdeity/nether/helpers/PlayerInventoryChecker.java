@@ -52,11 +52,11 @@ public class PlayerInventoryChecker extends InventoryObject{
 					endLoop=true;
 				}
 				check=false;
-				endLoop = false;
 			}
 			
 		}
-		return Test(I);
+		if(check) return Test(I);
+		return false;
 	}
 	@SuppressWarnings("unused")
 	public static boolean Test(Inventory I) {
