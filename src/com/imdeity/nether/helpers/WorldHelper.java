@@ -35,6 +35,7 @@ public class WorldHelper {
 	}
 
 	public static void regenerateNether() {
+		NetherSQL.clearTime();
 		File netherFolder = new File(DeityNether.plugin.getNetherName()); //The nether folder
 		delDir(netherFolder); //Delete the nether folder
 

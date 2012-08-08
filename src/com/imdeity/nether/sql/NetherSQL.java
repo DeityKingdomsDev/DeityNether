@@ -48,4 +48,9 @@ public class NetherSQL {
 		}
 		return 0;
 	}
+	
+	public static void clearTime() {
+		String sql = "UPDATE `deity_nether_stats` SET `time_in_nether`=?";
+		DeityAPI.getAPI().getDataAPI().getMySQL().write(sql, 0);
+	}
 }
