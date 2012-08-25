@@ -1,8 +1,9 @@
 name: DeityNether
-version: 1.4
+version: 1.5
 main: com.imdeity.nether.DeityNether
 author: mbonaborg777
 depend: [DeityAPI]
+load: STARTUP
 commands:
   nether:
     aliases: [n]

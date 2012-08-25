@@ -73,7 +73,7 @@ public class WorldHelper {
 				cuboid(corner1, corner2, Material.NETHERRACK); //We make a platform of netherrack below spawn incase the spawn is above a lava lake
 				return; //Exit from the method, we are done
 			}
-		}
+		} 
 		//We have reached the end of the for loop, we never found a good spawn location
 		//So now we make a cobblestone platform and a box of air above it
 		Location corner1 = new Location(w, -5, 64, -5);
@@ -81,6 +81,5 @@ public class WorldHelper {
 		Location corner3 = new Location(w, 5, 74, 5);
 		cuboid(corner1, corner3, Material.AIR);
 		cuboid(corner1, corner2, Material.COBBLESTONE);
-
 	}
 }

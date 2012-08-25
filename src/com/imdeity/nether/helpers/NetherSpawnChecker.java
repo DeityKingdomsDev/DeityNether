@@ -17,7 +17,4 @@ public class NetherSpawnChecker extends TimerTask {
 		}
 		
 	}
-	
-	
-
 }
